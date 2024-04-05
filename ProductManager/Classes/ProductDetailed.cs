@@ -1,6 +1,6 @@
 ﻿namespace ProductManager.Classes
 {
-    public class DetailedProduct : BaseProduct
+    public class ProductDetailed : ProductBase
     {
         public string Description { get; set; }
     }

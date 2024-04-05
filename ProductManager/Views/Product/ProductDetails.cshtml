@@ -1,0 +1,40 @@
+﻿@model ProductViewModel
+
+@{
+    
+}
+
+<div>
+    <form method="post">
+        <p>
+            <label>Name: </label>
+            <input type="text" name="Name" value="@Model.Name" />
+        </p>
+        <p>
+            <label>Brand: </label>
+            <input type="text" name="Brand" value="@Model.Brand" />
+        </p>
+        <p>
+            <label>Category: </label>
+            <input type="text" name="Category" value="@Model.Category.Name" />
+        </p>
+        <p>
+            <label>Price: </label>
+            <input type="text" name="Price" value="@Model.Price" />
+        </p>
+        <p>
+            <label>Contents: </label>
+            <input type="text" name="Contents" value="@Model.Contents" />
+        </p>
+        <p>
+            <label>Unit: </label>
+            <input type="text" name="Unit" value="@Model.Unit.Name" />
+        </p>
+        <p>
+            <input type="submit" name="Submit" value="Submit" />
+        </p>
+    </form>
+</div>
+
+@{
+}

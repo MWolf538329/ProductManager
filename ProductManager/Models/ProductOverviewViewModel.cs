@@ -2,7 +2,7 @@
 {
     public class ProductOverviewViewModel
     {
-        public IReadOnlyList<Classes.BaseProduct> Products { get { return _products; } }
-        private List<Classes.BaseProduct> _products { get; set; }
+        public IReadOnlyList<Classes.ProductBase> Products { get { return _products; } }
+        private List<Classes.ProductBase> _products { get; set; }
     }
 }

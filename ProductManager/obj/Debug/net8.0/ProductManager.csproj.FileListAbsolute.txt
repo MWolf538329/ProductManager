@@ -28,3 +28,8 @@ C:\Users\mikew\Documents\Fontys\Semester 2\Individueel Project\ProductManager\Pr
 C:\Users\mikew\Documents\Fontys\Semester 2\Individueel Project\ProductManager\ProductManager\obj\Debug\net8.0\ProductManager.pdb
 C:\Users\mikew\Documents\Fontys\Semester 2\Individueel Project\ProductManager\ProductManager\obj\Debug\net8.0\ProductManager.genruntimeconfig.cache
 C:\Users\mikew\Documents\Fontys\Semester 2\Individueel Project\ProductManager\ProductManager\obj\Debug\net8.0\ref\ProductManager.dll
+C:\Users\mikew\Documents\Fontys\Semester 2\Individueel Project\ProductManager\ProductManager\obj\Debug\net8.0\ProductManager.sourcelink.json
+C:\Users\mikew\Documents\Fontys\Semester 2\Individueel Project\ProductManager\ProductManager\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\mikew\Documents\Fontys\Semester 2\Individueel Project\ProductManager\ProductManager\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\mikew\Documents\Fontys\Semester 2\Individueel Project\ProductManager\ProductManager\obj\Debug\net8.0\ProductManager.csproj.AssemblyReference.cache
+C:\Users\mikew\Documents\Fontys\Semester 2\Individueel Project\ProductManager\ProductManager\obj\Debug\net8.0\ProductM.F4B8B69F.Up2Date

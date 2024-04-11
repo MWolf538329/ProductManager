@@ -15,7 +15,6 @@ namespace ProductManager.Controllers
 
         public IActionResult ProductOverview()
         {
-            
             SqlConnection conn = new SqlConnection(_configuration.GetConnectionString("ProductManagerTest")!);
             SqlCommand cmd = new SqlCommand("SELECT P.ID AS 'P.ID', P.Name, P.Brand, P.Price, P.Contents, P.Unit, C.ID AS 'C.ID', C.Name FROM Product AS P INNER JOIN Category AS C ON P.Category_ID = C.ID", conn);
             conn.Open();

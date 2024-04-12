@@ -1,5 +1,7 @@
-﻿@{
-    ViewData["title"] = "Product Overview Page";
+﻿@model IEnumerable<ProductManager.Models.ProductViewModel>;
+
+@{
+    ViewData["Title"] = "Product Overview Page";
 }
 
 <div id="ProductOverview">
@@ -12,20 +14,18 @@
             <th>Contents</th>
             <th>Unit</th>
         </tr>
-        <tr>
-            <td>Appel</td>
-            <td>Jonagold</td>
-            <td>€2,50</td>
-            <td>1</td>
-            <td>per stuk</td>
-        </tr>
-        <tr>
-            <td>Banaan</td>
-            <td>Chiquita</td>
-            <td>€2,75</td>
-            <td>100</td>
-            <td>gram</td>
-        </tr>
+
+        @foreach (ProductViewModel product in Model)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.Brand</td>
+                <td>@product.Price</td>
+                <td>@product.Contents</td>
+                <td>@product.Unit</td>
+            </tr>
+        }
+
     </table>
     <button>&lt;</button>
     <button>&gt;</button>

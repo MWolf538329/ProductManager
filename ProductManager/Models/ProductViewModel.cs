@@ -10,6 +10,5 @@ namespace ProductManager.Models
         public decimal Price { get; set; }
         public int Contents { get; set; }
         public Data.Enum.Unit Unit { get; set; }
-        public string Description { get; set; }
     }
 }

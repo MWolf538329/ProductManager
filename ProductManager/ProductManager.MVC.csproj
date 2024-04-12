@@ -11,4 +11,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ProductManager.Core\ProductManager.Core.csproj" />
+    <ProjectReference Include="..\ProductManager.DAL\ProductManager.DAL.csproj" />
+  </ItemGroup>
+
 </Project>

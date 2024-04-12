@@ -1,4 +1,4 @@
-﻿namespace ProductManager.Data.Enum
+﻿namespace ProductManager.Core
 {
     public enum Unit
     {

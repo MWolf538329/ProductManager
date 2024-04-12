@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProductManager.Classes;
 using Microsoft.Data.SqlClient;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using ProductManager.Core.Interfaces;
+using ProductManager.DAL;
 
-namespace ProductManager.Controllers
+namespace ProductManager.MVC.Controllers
 {
     public class ProductController : Controller
     {
@@ -16,28 +16,12 @@ namespace ProductManager.Controllers
 
         public IActionResult ProductOverview()
         {
-            SqlConnection conn = new SqlConnection(_configuration.GetConnectionString("ProductManagerTest")!);
-            SqlCommand cmd = new SqlCommand("SELECT P.ID AS 'P.ID', P.Name AS 'P.Name', P.Brand AS 'P.Brand', P.Price AS 'P.Price', P.Contents AS 'P.Contents', P.Unit AS 'P.Unit', C.ID AS 'C.ID', C.Name AS 'C.Name' FROM Product AS P INNER JOIN Category AS C ON P.Category_ID = C.ID", conn);
-            conn.Open();
-            SqlDataReader reader = cmd.ExecuteReader();
+            IProductDAL productDAL = new ProductDAL(_configuration.GetConnectionString("ProductManagerTest")!);
 
-            List<ProductBase> products = new List<ProductBase>();
+            productDAL.GetProducts(0);
 
-            while (reader.Read())
-            {
-                products.Add(new ProductBase()
-                {
-                    ID = Convert.ToInt32(reader["P.ID"]),
-                    Name = reader["P.Name"].ToString()!,
-                    Brand = reader["P.Brand"].ToString()!,
-                    Price = Convert.ToDecimal(reader["P.Price"]),
-                    Contents = Convert.ToInt32(reader["P.Contents"]),
-                    Unit = reader["P.Unit"].ToString()!,
-                    Category = new Category() { ID = Convert.ToInt32(reader["C.ID"]), Name = reader["C.Name"].ToString()! }
-                });
-            }
-
-            return View(products);
+            //return View(products);
+            return View();
         }
 
         public IActionResult ProductCreation()
@@ -58,8 +42,9 @@ namespace ProductManager.Controllers
 
         public IActionResult ProductDetails(int id)
         {
-            ProductDetailed productDetailed = new ProductDetailed();
-            return View(productDetailed);
+            //ProductDetailed productDetailed = new ProductDetailed();
+            //return View(productDetailed);
+            return View();
         }
     }
 }

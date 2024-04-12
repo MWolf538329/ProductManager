@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace ProductManager.Controllers
+namespace ProductManager.MVC.Controllers
 {
     public class BranchController : Controller
     {

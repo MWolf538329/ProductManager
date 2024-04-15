@@ -8,11 +8,13 @@
     <a asp-area="" asp-controller="Product" asp-action="ProductCreation">+</a>
     <table id="ProductTable">
         <tr>
-            <th><input placeholder="Name" /><button>&#8639;</button></th>
-            <th><input placeholder="Brand" /><button>&#8643;</button></th>
+            <form method="get">
+            <th><input name="Name" placeholder="Name" /><button>&#8639;</button></th>
+            <th><input name="Brand" placeholder="Brand" /><button>&#8643;</button></th>
             <th>Price</th>
             <th>Contents</th>
             <th>Unit</th>
+            </form>
         </tr>
 
         @foreach (ProductViewModel product in Model)

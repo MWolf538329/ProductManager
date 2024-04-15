@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using ProductManager.Core;
 using ProductManager.Core.Interfaces;
 using ProductManager.DAL;
+using ProductManager.MVC.Models;
 
 namespace ProductManager.MVC.Controllers
 {
@@ -18,10 +20,53 @@ namespace ProductManager.MVC.Controllers
         {
             IProductDAL productDAL = new ProductDAL(_configuration.GetConnectionString("ProductManagerTest")!);
 
-            productDAL.GetProducts(0);
+            ProductLogic productLogic = new(productDAL);
 
-            //return View(products);
-            return View();
+            List<ProductViewModel> productViewModels = new();
+
+            foreach (Product product in productLogic.GetProducts())
+            {
+                ProductViewModel productViewModel = new ProductViewModel()
+                {
+                    Name = product.Name,
+                    Brand = product.Brand,
+                    Category = product.Category.ToString()!,
+                    Price = product.Price,
+                    Contents = product.Contents,
+                    Unit = product.Unit.ToString()!
+                };
+
+                productViewModels.Add(productViewModel);
+            }
+
+            return View(productViewModels);
+        }
+
+        [HttpGet]
+        public IActionResult ProductOverview(IFormCollection formFields)
+        {
+            IProductDAL productDAL = new ProductDAL(_configuration.GetConnectionString("ProductManagerTest")!);
+
+            ProductLogic productLogic = new(productDAL);
+
+            List<ProductViewModel> productViewModels = new();
+
+            foreach (Product product in productLogic.GetProducts())
+            {
+                ProductViewModel productViewModel = new ProductViewModel()
+                {
+                    Name = product.Name,
+                    Brand = product.Brand,
+                    Category = product.Category.ToString()!,
+                    Price = product.Price,
+                    Contents = product.Contents,
+                    Unit = product.Unit.ToString()!
+                };
+
+                productViewModels.Add(productViewModel);
+            }
+
+            return View(productViewModels);
         }
 
         public IActionResult ProductCreation()

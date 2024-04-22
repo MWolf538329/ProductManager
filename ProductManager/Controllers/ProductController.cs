@@ -84,12 +84,5 @@ namespace ProductManager.MVC.Controllers
 
             return View();
         }
-
-        public IActionResult ProductDetails(int id)
-        {
-            //ProductDetailed productDetailed = new ProductDetailed();
-            //return View(productDetailed);
-            return View();
-        }
     }
 }

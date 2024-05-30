@@ -1,4 +1,4 @@
-namespace ProductManagerTests
+namespace ProductManagerTests.CoreTests
 {
     [TestClass]
     public class UnitTest1

@@ -1,4 +1,6 @@
-﻿namespace ProductManager.Core.Interfaces
+﻿using ProductManager.Core.Models;
+
+namespace ProductManager.Core.Interfaces
 {
     public interface IProductDAL
     {

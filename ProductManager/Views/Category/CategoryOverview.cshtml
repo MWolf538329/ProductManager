@@ -1,0 +1,27 @@
+﻿@model IEnumerable<ProductManager.MVC.Models.CategoryViewModel>;
+
+@{
+    ViewData["Title"] = "Category Overview Page";
+}
+
+<div id="CategoryOverview">
+    <a asp-area="" asp-controller="Category" asp-action="CategoryCreation">Create New Category</a>
+    <table id="CategoryTable">
+        <tr>
+            <form method="get">
+            <th><input name="Name" placeholder="Name" /><button>&#8639;</button></th>
+            </form>
+        </tr>
+
+        @foreach (CategoryViewModel category in Model)
+        {
+            <tr>
+                <td>@category.Name</td>
+                <td><a asp-area="" asp-controller="Product" asp-action="ProductModification">Change Product</a></td>
+            </tr>
+        }
+
+    </table>
+    <button>&lt;</button>
+    <button>&gt;</button>
+</div>

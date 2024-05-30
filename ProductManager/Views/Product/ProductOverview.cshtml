@@ -5,7 +5,7 @@
 }
 
 <div id="ProductOverview">
-    <a asp-area="" asp-controller="Product" asp-action="ProductCreation">+</a>
+    <a asp-area="" asp-controller="Product" asp-action="ProductCreation">Create New Product</a>
     <table id="ProductTable">
         <tr>
             <form method="get">
@@ -25,6 +25,7 @@
                 <td>@product.Price</td>
                 <td>@product.Contents</td>
                 <td>@product.Unit</td>
+                <td><a asp-area="" asp-controller="Product" asp-action="ProductModification">Change Product</a></td>
             </tr>
         }
 

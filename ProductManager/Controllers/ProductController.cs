@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using ProductManager.Core;
 using ProductManager.Core.Interfaces;
+using ProductManager.Core.Models;
 using ProductManager.DAL;
 using ProductManager.MVC.Models;
 
@@ -78,7 +79,7 @@ namespace ProductManager.MVC.Controllers
         public IActionResult ProductCreation(IFormCollection formFields)
         {
             SqlConnection conn = new SqlConnection(_configuration.GetConnectionString("ProductManagerTest")!);
-            SqlCommand cmd = new SqlCommand("INSERT INTO Product ([Columns]) VALUES ([Values])");
+            SqlCommand cmd = new SqlCommand("INSERT INTO Product ('Name', 'Brand', 'Price', 'Contents', 'Unit', '') VALUES ([Values])");
 
             string name = formFields["Name"].ToString();
 

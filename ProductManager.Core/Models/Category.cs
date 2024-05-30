@@ -1,4 +1,4 @@
-﻿namespace ProductManager.Core
+﻿namespace ProductManager.Core.Models
 {
     public class Category
     {

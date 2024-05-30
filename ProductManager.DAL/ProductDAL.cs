@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using ProductManager.Core;
 using ProductManager.Core.Interfaces;
+using ProductManager.Core.Models;
 
 namespace ProductManager.DAL
 {

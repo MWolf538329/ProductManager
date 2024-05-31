@@ -21,7 +21,7 @@ namespace ProductManager.MVC.Controllers
         {
             IProductDAL productDAL = new ProductDAL(_configuration.GetConnectionString("ProductManagerTest")!);
 
-            ProductLogic productLogic = new(productDAL);
+            ProductService productLogic = new(productDAL);
 
             List<ProductViewModel> productViewModels = new();
 
@@ -48,7 +48,7 @@ namespace ProductManager.MVC.Controllers
         {
             IProductDAL productDAL = new ProductDAL(_configuration.GetConnectionString("ProductManagerTest")!);
 
-            ProductLogic productLogic = new(productDAL);
+            ProductService productLogic = new(productDAL);
 
             List<ProductViewModel> productViewModels = new();
 

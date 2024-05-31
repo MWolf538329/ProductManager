@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProductManager.Core.Models;
+﻿using ProductManager.Core.Models;
 
 namespace ProductManager.Core.Interfaces
 {
     public interface ICategoryDAL
     {
+        Category GetCategory(int id);
         List<Category> GetCategories();
+        bool CreateCategory(string name);
+        bool UpdateCategory(int id, string name);
+        bool DeleteCategory(int id);
     }
 }

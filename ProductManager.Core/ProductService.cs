@@ -2,11 +2,11 @@
 using ProductManager.Core.Models;
 namespace ProductManager.Core
 {
-    public class ProductLogic
+    public class ProductService
     {
         IProductDAL _DAL;
 
-        public ProductLogic(IProductDAL dal)
+        public ProductService(IProductDAL dal)
         {
             _DAL = dal;
         }

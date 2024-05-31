@@ -5,6 +5,16 @@
 }
 
 <div id="CategoryOverview">
+
+    
+    @* Andere mogelijkheid:
+    <p>@TempData["SuccesMessage"]</p> *@
+
+
+    @if (!string.IsNullOrEmpty(ViewBag.SuccesMessage))
+    {
+        <p>@ViewBag.SuccesMessage</p>
+    }
     <a asp-area="" asp-controller="Category" asp-action="CategoryCreation">Create New Category</a>
     <table id="CategoryTable">
         <tr>
@@ -17,7 +27,8 @@
         {
             <tr>
                 <td>@category.Name</td>
-                <td><a asp-area="" asp-controller="Product" asp-action="ProductModification">Change Product</a></td>
+                <td>@Html.ActionLink("Update", "CategoryModification", new { id = category.Id })</td>
+                <td>@Html.ActionLink("Delete", "CategoryDeletion", new { id = category.Id })</td>
             </tr>
         }
 

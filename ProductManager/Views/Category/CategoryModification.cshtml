@@ -1,0 +1,15 @@
+﻿@model CategoryViewModel;
+
+@{
+    ViewData["title"] = "Category Modification Page";
+}
+
+<div>
+    <form method="post">
+        <p>
+            <input type="hidden" name="ID" value="@Model.Id" />
+            <label>Name: </label>
+            <input type="text" name="Name" value="@Model.Name" />
+        </p>
+    </form>
+</div>

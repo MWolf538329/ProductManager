@@ -35,17 +35,17 @@ namespace ProductManager.Core
             return categories;
         }
 
-        public bool CreateCategory(string name)
+        public string CreateCategory(string name)
         {
             return _DAL.CreateCategory(name);
         }
 
-        public bool UpdateCategory(int id, string name)
+        public string UpdateCategory(int id, string name)
         {
             return _DAL.UpdateCategory(id, name);
         }
 
-        public bool DeleteCategory(int id)
+        public string DeleteCategory(int id)
         {
             return _DAL.DeleteCategory(id);
         }

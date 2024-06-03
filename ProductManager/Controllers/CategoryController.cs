@@ -5,6 +5,7 @@ using ProductManager.DAL;
 using ProductManager.MVC.Models;
 using ProductManager.Core.Models;
 using Microsoft.Build.Framework;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace ProductManager.MVC.Controllers
 {
@@ -48,21 +49,20 @@ namespace ProductManager.MVC.Controllers
         [HttpPost]
         public IActionResult CategoryCreation(IFormCollection formFields)
         {
-            string message;
+            string succesMessage;
 
             if (!string.IsNullOrEmpty(formFields["Name"]))
             {
                 ICategoryDAL categoryDAL = new CategoryDAL(connectionString);
                 CategoryService categoryService = new(categoryDAL);
 
-                if (categoryService.CreateCategory(formFields["Name"]!)) 
-                    message = "Category succesfully created!"; else message = "Category could not be created!";
+                succesMessage = categoryService.CreateCategory(formFields["Name"]!);
             }
-            else message = "Category name input field empty!";
+            else succesMessage = "Category name input field empty!";
 
-            TempData["SuccesMessage"] = message;
+            TempData["SuccesMessage"] = succesMessage;
 
-            return RedirectToAction("CategoryOverview", "Category", message);
+            return RedirectToAction("CategoryOverview");
         }
 
         public IActionResult CategoryModification(int id)
@@ -92,38 +92,37 @@ namespace ProductManager.MVC.Controllers
         [HttpPost]
         public IActionResult CategoryModification(IFormCollection formFields)
         {
-            string message;
+            string succesMessage;
 
             if (!string.IsNullOrEmpty(formFields["Name"]))
             {
                 ICategoryDAL categoryDAL = new CategoryDAL(connectionString);
                 CategoryService categoryService = new(categoryDAL);
 
-                if (categoryService.UpdateCategory(Convert.ToInt32(formFields["ID"]), formFields["Name"]!))
-                    message = "Category succesfully updated!"; else message = "Category could not be updated!";
+                succesMessage = categoryService.UpdateCategory(Convert.ToInt32(formFields["ID"]), formFields["Name"]!);
             }
-            else message = "Category name input field empty!";
+            else succesMessage = "Category name input field empty!";
 
-            TempData["SuccesMessage"] = message;
+            TempData["SuccesMessage"] = succesMessage;
 
             return RedirectToAction("CategoryOverview");
         }
 
+        [HttpPost]
         public IActionResult CategoryDeletion(int id)
         {
-            string message;
+            string succesMessage;
 
             if (id != 0)
             {
                 ICategoryDAL categoryDAL = new CategoryDAL(connectionString);
                 CategoryService categoryService = new(categoryDAL);
 
-                if (categoryService.DeleteCategory(id)) message = "Category succesfully deleted!";
-                else message = "Category could not be deleted!";
+                succesMessage = categoryService.DeleteCategory(id);
             }
-            else message = "Category can not be 0";
+            else succesMessage = "Category can not be 0";
 
-            TempData["SuccesMessage"] = message;
+            TempData["SuccesMessage"] = succesMessage;
 
             return RedirectToAction("CategoryOverview");
         }

@@ -65,9 +65,9 @@ namespace ProductManager.DAL
             return categories;
         }
 
-        public bool CreateCategory(string name)
+        public string CreateCategory(string name)
         {
-            bool succes;
+            string succesMessage = string.Empty;
 
             using (SqlConnection conn = new SqlConnection(_conn))
             {
@@ -83,21 +83,28 @@ namespace ProductManager.DAL
                 {
                     cmd.ExecuteNonQuery();
                     _transaction.Commit();
-                    succes = true;
+                    succesMessage = "Category succesfully created!";
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     _transaction.Rollback();
-                    succes = false;
+
+                    // Duplicate Category
+                    if (ex.Message.Contains("Violation of UNIQUE KEY constraint 'Unique_Name'. Cannot insert duplicate key"))
+                        succesMessage = "Category could not be created because one with the same name already exists!";
+
+                    // Category Exceeds Max Length
+                    if (ex.Message.Contains("String or binary data would be truncated in table"))
+                        succesMessage = "Category could not be created because the name is too long!";
                 }
             }
 
-            return succes;
+            return succesMessage;
         }
 
-        public bool UpdateCategory(int id, string name)
+        public string UpdateCategory(int id, string name)
         {
-            bool succes;
+            string succesMessage = string.Empty;
 
             using (SqlConnection conn = new SqlConnection(_conn))
             {
@@ -114,21 +121,28 @@ namespace ProductManager.DAL
                 {
                     cmd.ExecuteNonQuery();
                     _transaction.Commit();
-                    succes = true;
+                    succesMessage = "Category succesfully updated!";
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     _transaction.Rollback();
-                    succes = false;
+
+                    // Duplicate Category
+                    if (ex.Message.Contains("Violation of UNIQUE KEY constraint 'Unique_Name'. Cannot insert duplicate key"))
+                        succesMessage = "Category could not be updated because one with the same name already exists!";
+
+                    // Category Exceeds Max Length
+                    if (ex.Message.Contains("String or binary data would be truncated in table"))
+                        succesMessage = "Category could not be updated because the name is too long!";
                 }
             }
                 
-            return succes;
+            return succesMessage;
         }
 
-        public bool DeleteCategory(int id)
+        public string DeleteCategory(int id)
         {
-            bool succes;
+            string succesMessage = string.Empty;
 
             using (SqlConnection conn = new SqlConnection(_conn))
             {
@@ -144,16 +158,19 @@ namespace ProductManager.DAL
                 {
                     cmd.ExecuteNonQuery();
                     _transaction.Commit();
-                    succes = true;
+                    succesMessage = "Category succesfully deleted!";
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     _transaction.Rollback();
-                    succes = false;
+
+                    // Category Linked To Product
+                    if (ex.Message.Contains("The DELETE statement conflicted with the REFERENCE constraint"))
+                        succesMessage = "Category could not be deleted because it is linked to 1 or more products!";
                 }
             }
                 
-            return succes;
+            return succesMessage;
         }
     }
 }

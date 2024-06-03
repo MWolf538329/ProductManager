@@ -6,8 +6,8 @@ namespace ProductManager.Core.Interfaces
     {
         Category GetCategory(int id);
         List<Category> GetCategories();
-        bool CreateCategory(string name);
-        bool UpdateCategory(int id, string name);
-        bool DeleteCategory(int id);
+        string CreateCategory(string name);
+        string UpdateCategory(int id, string name);
+        string DeleteCategory(int id);
     }
 }

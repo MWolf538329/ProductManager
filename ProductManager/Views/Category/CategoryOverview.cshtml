@@ -5,16 +5,18 @@
 }
 
 <div id="CategoryOverview">
-
-    
-    @* Andere mogelijkheid:
-    <p>@TempData["SuccesMessage"]</p> *@
-
-
     @if (!string.IsNullOrEmpty(ViewBag.SuccesMessage))
     {
-        <p>@ViewBag.SuccesMessage</p>
+        if (ViewBag.SuccesMessage.Contains("succesfully"))
+        {
+            <div class="alert alert-success" role="alert">@ViewBag.SuccesMessage</div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">@ViewBag.SuccesMessage</div>
+        }
     }
+
     <a asp-area="" asp-controller="Category" asp-action="CategoryCreation">Create New Category</a>
     <table id="CategoryTable">
         <tr>

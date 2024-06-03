@@ -14,31 +14,6 @@ namespace ProductManager.DAL
             _conn = conn;
         }
 
-        public Category GetCategory(int id)
-        {
-            Category category = new();
-
-            using (SqlConnection conn = new SqlConnection(_conn))
-            {
-                SqlCommand cmd = new("SELECT Category.ID, Category.Name FROM Category WHERE Category.ID = @categoryID", conn);
-                cmd.Parameters.AddWithValue("@categoryID", id);
-                cmd.Connection = conn;
-
-                conn.Open();
-
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        category.ID = Convert.ToInt32(reader["ID"]);
-                        category.Name = reader["Name"].ToString()!;
-                    }
-                }
-            }
-
-            return category;
-        }
-
         public List<Category> GetCategories()
         {
             List<Category> categories = new();
@@ -63,6 +38,31 @@ namespace ProductManager.DAL
             }
 
             return categories;
+        }
+
+        public Category GetCategory(int id)
+        {
+            Category category = new();
+
+            using (SqlConnection conn = new SqlConnection(_conn))
+            {
+                SqlCommand cmd = new("SELECT Category.ID, Category.Name FROM Category WHERE Category.ID = @categoryID", conn);
+                cmd.Parameters.AddWithValue("@categoryID", id);
+                cmd.Connection = conn;
+
+                conn.Open();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        category.ID = Convert.ToInt32(reader["ID"]);
+                        category.Name = reader["Name"].ToString()!;
+                    }
+                }
+            }
+
+            return category;
         }
 
         public string CreateCategory(string name)

@@ -1,5 +1,8 @@
-﻿@{
+﻿@using ProductManager.Core
+
+@{
     ViewData["title"] = "Product Creation Page";
+    // ViewBag.FilteredCategories = "";
 }
 
 <div>
@@ -14,19 +17,42 @@
         </p>
         <p>
             <label>Category: </label>
-            <input type="text" name="Category" />
+            <select>
+                <option value="" selected>...</option>
+                @if (ViewBag.Categories != null) {
+                    foreach (string category in ViewBag.Categories)
+                    {
+                        <option value="@category">@category</option>
+                    }
+                }
+            </select>
+
+
+            @* <input type="text" name="Category" oninput="applyFilterToCategoryDropdown()" />
+            <select>
+                @foreach (string category in ViewBag.FilteredCategories)
+                {
+                    <option value="@category">@category</option>
+                }
+            </select> *@
         </p>
         <p>
             <label>Price: </label>
-            <input type="text" name="Price" />
+            <input type="text" name="Price" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 190" />
         </p>
         <p>
             <label>Contents: </label>
-            <input type="text" name="Contents" />
+            <input type="text" name="Contents" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
         </p>
         <p>
             <label>Unit: </label>
-            <input type="text" name="Unit" />
+            <select name="Unit">
+                <option value="" selected>...</option>
+                @foreach (Unit unit in Enum.GetValues(typeof(Unit)))
+                {
+                    <option value="@unit">@unit</option>
+                }
+            </select>
         </p>
         <p>
             <input type="submit" name="Submit" value="Submit"/>
@@ -35,5 +61,13 @@
 </div>
 
 @{
-    
 }
+
+@* <script type="text/javascript">
+    function applyFilterToCategoryDropdown() {
+        var inputValue = document.getElementsByName("Category").values;
+        var unFilteredCategories = @ViewBag.Categories;
+        var filteredCategories = unFilteredCategories.filter(item => item.includes(inputValue));
+        @ViewBag.FilteredCategories = filteredCategories;
+    }
+</script> *@

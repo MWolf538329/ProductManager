@@ -108,7 +108,6 @@ namespace ProductManager.MVC.Controllers
             return RedirectToAction("CategoryOverview");
         }
 
-        [HttpPost]
         public IActionResult CategoryDeletion(int id)
         {
             string succesMessage;

@@ -2,72 +2,74 @@
 
 @{
     ViewData["title"] = "Product Creation Page";
-    // ViewBag.FilteredCategories = "";
 }
 
-<div>
-    <form method="post">
-        <p>
-            <label>Name: </label>
-            <input type="text" name="Name" />
-        </p>
-        <p>
-            <label>Brand: </label>
-            <input type="text" name="Brand" />
-        </p>
-        <p>
-            <label>Category: </label>
-            <select>
-                <option value="" selected>...</option>
-                @if (ViewBag.Categories != null) {
-                    foreach (string category in ViewBag.Categories)
-                    {
-                        <option value="@category">@category</option>
-                    }
-                }
-            </select>
+<div class="container text-center">
+    <div class="row align-items-start">
+        <div class="col"></div>
 
+        <div class="col text-center">
+            <h1>Product Creation</h1>
 
-            @* <input type="text" name="Category" oninput="applyFilterToCategoryDropdown()" />
-            <select>
-                @foreach (string category in ViewBag.FilteredCategories)
-                {
-                    <option value="@category">@category</option>
-                }
-            </select> *@
-        </p>
-        <p>
-            <label>Price: </label>
-            <input type="text" name="Price" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 190" />
-        </p>
-        <p>
-            <label>Contents: </label>
-            <input type="text" name="Contents" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
-        </p>
-        <p>
-            <label>Unit: </label>
-            <select name="Unit">
-                <option value="" selected>...</option>
-                @foreach (Unit unit in Enum.GetValues(typeof(Unit)))
-                {
-                    <option value="@unit">@unit</option>
-                }
-            </select>
-        </p>
-        <p>
-            <input type="submit" name="Submit" value="Submit"/>
-        </p>
-    </form>
+            <form method="post">
+                <div class="row">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">Name: </div>
+                            <div class="col"><input type="text" name="Name" /></div>
+                        </div>
+                        <div class="row">
+                            <div class="col">Brand: </div>
+                            <div class="col"><input type="text" name="Brand" /></div>
+                        </div>
+                        <div class="row">
+                            <div class="col">Category: </div>
+                            <div class="col">
+                                <select>
+                                    <option value="" selected>...</option>
+                                    @if (ViewBag.Categories != null)
+                                    {
+                                        foreach (string category in ViewBag.Categories)
+                                        {
+                                            <option value="@category">@category</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">Price: </div>
+                            <div class="col"><input type="text" name="Price" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46" /></div>
+                        </div>
+                        <div class="row">
+                            <div class="col">Contents: </div>
+                            <div class="col"><input type="text" name="Contents" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" /></div>
+                        </div>
+                        <div class="row">
+                            <div class="col">Unit: </div>
+                            <div class="col">
+                                <select name="Unit">
+                                    <option value="" selected>...</option>
+                                    @foreach (Unit unit in Enum.GetValues(typeof(Unit)))
+                                    {
+                                        <option value="@unit">@unit</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row text-center">
+                    <div class="col"></div>
+                    <div class="col">
+                        <input type="submit" name="Submit" value="Submit" />
+                    </div>
+                    <div class="col"></div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col"></div>
+    </div>
 </div>
-
-@{
-}
-
-@* <script type="text/javascript">
-    function applyFilterToCategoryDropdown() {
-        var inputValue = document.getElementsByName("Category").values;
-        var unFilteredCategories = @ViewBag.Categories;
-        var filteredCategories = unFilteredCategories.filter(item => item.includes(inputValue));
-        @ViewBag.FilteredCategories = filteredCategories;
-    }
-</script> *@

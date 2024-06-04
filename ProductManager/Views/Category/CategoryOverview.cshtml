@@ -4,7 +4,9 @@
     ViewData["Title"] = "Category Overview Page";
 }
 
-<div id="CategoryOverview">
+<div>
+    <h1 class="text-center">Category Overview</h1>
+
     @if (!string.IsNullOrEmpty(ViewBag.SuccesMessage))
     {
         if (ViewBag.SuccesMessage.Contains("succesfully"))
@@ -16,25 +18,26 @@
             <div class="alert alert-danger" role="alert">@ViewBag.SuccesMessage</div>
         }
     }
-
+    
     <a asp-area="" asp-controller="Category" asp-action="CategoryCreation">Create New Category</a>
-    <table id="CategoryTable">
-        <tr>
-            <form method="get">
-            <th><input name="Name" placeholder="Name" /><button>&#8639;</button></th>
-            </form>
-        </tr>
 
-        @foreach (CategoryViewModel category in Model)
-        {
-            <tr>
-                <td>@category.Name</td>
-                <td>@Html.ActionLink("Update", "CategoryModification", new { id = category.Id })</td>
-                <td>@Html.ActionLink("Delete", "CategoryDeletion", new { id = category.Id })</td>
+    <table class="table table-bordered">
+        <thead>
+            <tr class="table-primary">
+                <th><input type="text" name="Name" placeholder="Name" /></th>
+                <th>Update</th>
+                <th>Delete</th>
             </tr>
-        }
-
+        </thead>
+        <tbody class="table-group-divider">
+            @foreach (CategoryViewModel category in Model)
+            {
+                <tr>
+                    <td>@category.Name</td>
+                    <td>@Html.ActionLink("Update", "CategoryModification", new { id = category.Id })</td>
+                    <td>@Html.ActionLink("Delete", "CategoryDeletion", new { id = category.Id })</td>
+                </tr>
+            }
+        </tbody>
     </table>
-    <button>&lt;</button>
-    <button>&gt;</button>
 </div>

@@ -78,13 +78,15 @@ namespace ProductManager.DAL
                 cmd.Parameters.AddWithValue("@categoryName", name);
                 cmd.Connection = conn;
                 cmd.Transaction = _transaction;
-                
+
                 try
                 {
                     cmd.ExecuteNonQuery();
                     _transaction.Commit();
                     succesMessage = "Category succesfully created!";
                 }
+                catch (SqlException sqlEx)
+                { }
                 catch (Exception ex)
                 {
                     _transaction.Rollback();

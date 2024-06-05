@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using ProductManager.Core;
 using ProductManager.Core.Interfaces;
 using ProductManager.Core.Models;
@@ -9,24 +10,24 @@ namespace ProductManager.MVC.Controllers
 {
     public class ProductController : Controller
     {
-        private IConfiguration _configuration;
-        private string connectionString;
+        private readonly IConfiguration _configuration;
+        private readonly string _connectionString;
+        private readonly IProductDAL _productDAL;
+        private readonly ProductService _productService;
 
         public ProductController(IConfiguration configuration)
         {
             _configuration = configuration;
-            connectionString = _configuration.GetConnectionString("ProductManagerTest")!;
+            _connectionString = _configuration.GetConnectionString("ProductManagerTest")!;
+            _productDAL = new ProductDAL(_connectionString);
+            _productService = new(_productDAL);
         }
 
         public IActionResult ProductOverview()
         {
-            IProductDAL productDAL = new ProductDAL(connectionString);
-
-            ProductService productService = new(productDAL);
-
             List<ProductViewModel> productViewModels = new();
 
-            foreach (Product product in productService.GetProducts())
+            foreach (Product product in _productService.GetProducts())
             {
                 ProductViewModel productViewModel = new ProductViewModel()
                 {
@@ -38,9 +39,10 @@ namespace ProductManager.MVC.Controllers
                     Contents = product.Contents,
                     Unit = product.Unit.ToString()!
                 };
-
                 productViewModels.Add(productViewModel);
             }
+
+            ViewBag.SuccesMessage = TempData["SuccesMessage"];
 
             return View(productViewModels);
         }
@@ -74,13 +76,9 @@ namespace ProductManager.MVC.Controllers
 
         public IActionResult ProductCreation()
         {
-            IProductDAL productDAL = new ProductDAL(connectionString);
-
-            ProductService productService = new(productDAL);
-
             List<string> categories = new List<string>();
 
-            foreach (Category category in productService.GetCategories())
+            foreach (Category category in _productService.GetCategories())
             {
                 categories.Add(category.Name);
             }
@@ -93,20 +91,19 @@ namespace ProductManager.MVC.Controllers
         [HttpPost]
         public IActionResult ProductCreation(IFormCollection formFields)
         {
-            IProductDAL productDAL = new ProductDAL(connectionString);
+            string succesMessage;
 
-            ProductService productService = new(productDAL);
+            if (!InputEmpty(formFields["Name"].ToString()) && !InputEmpty(formFields["Brand"].ToString()) && !InputEmpty(formFields["Price"].ToString())
+                && !InputEmpty(formFields["Contents"].ToString()) && !InputEmpty(formFields["Unit"].ToString()))
+            {
+                succesMessage = _productService.CreateProduct(formFields["Name"].ToString(), formFields["Brand"].ToString(),
+                    formFields["Category"].ToString(), Convert.ToDecimal(formFields["Price"]), Convert.ToInt32(formFields["Contents"]), formFields["Unit"].ToString());
+            }
+            else succesMessage = "Product input fields empty!";
 
-            //List<string> categories = new List<string>();
+            TempData["SuccesMessage"] = succesMessage;
 
-            //foreach (Category category in productService.GetCategories())
-            //{
-            //    categories.Add(category.Name);
-            //}
-
-            //TempData["Categories"] = categories;
-
-            return View();
+            return RedirectToAction("ProductOverview");
         }
 
         public IActionResult ProductModification(int id)
@@ -116,10 +113,7 @@ namespace ProductManager.MVC.Controllers
 
             if (id != 0)
             {
-                IProductDAL productDAL = new ProductDAL(connectionString);
-                ProductService productService = new(productDAL);
-
-                product = productService.GetProduct(id);
+                product = _productService.GetProduct(id);
 
                 if (product.ID != 0 && !string.IsNullOrEmpty(product.Name))
                 {
@@ -137,7 +131,7 @@ namespace ProductManager.MVC.Controllers
 
                     List<string> categories = new List<string>();
 
-                    foreach (Category category in productService.GetCategories())
+                    foreach (Category category in _productService.GetCategories())
                     {
                         categories.Add(category.Name);
                     }
@@ -156,19 +150,22 @@ namespace ProductManager.MVC.Controllers
         {
             string succesMessage;
 
-            if (!string.IsNullOrEmpty(formFields["Name"]))
+            if (!InputEmpty(formFields["Name"].ToString()) && !InputEmpty(formFields["Brand"].ToString()) && !InputEmpty(formFields["Price"].ToString())
+                && !InputEmpty(formFields["Contents"].ToString()) && !InputEmpty(formFields["Unit"].ToString()))
             {
-                IProductDAL productDAL = new ProductDAL(connectionString);
-                ProductService productService = new(productDAL);
-
-                succesMessage = productService.UpdateProduct();
-                //succesMessage = productService.UpdateProduct(Convert.ToInt32(formFields["ID"]), formFields["Name"]!);
+                succesMessage = _productService.UpdateProduct(Convert.ToInt32(formFields["ID"]), formFields["Name"].ToString(), formFields["Brand"].ToString(), 
+                    formFields["Category"].ToString(), Convert.ToDecimal(formFields["Price"]), Convert.ToInt32(formFields["Contents"]), formFields["Unit"].ToString());
             }
-            else succesMessage = "Category name input field empty!";
+            else succesMessage = "Product input fields empty!";
 
             TempData["SuccesMessage"] = succesMessage;
 
-            return RedirectToAction("CategoryOverview");
+            return RedirectToAction("ProductOverview");
+        }
+
+        private bool InputEmpty(string input)
+        {
+            return string.IsNullOrEmpty(input); 
         }
     }
 }

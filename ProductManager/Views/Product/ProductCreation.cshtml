@@ -14,15 +14,15 @@
             <form method="post">
                 <div class="row">
                     <div class="col">
-                        <div class="row">
+                        <div class="row m-2">
                             <div class="col">Name: </div>
-                            <div class="col"><input type="text" name="Name" /></div>
+                            <div class="col"><input type="text" name="Name" required/></div>
                         </div>
-                        <div class="row">
+                        <div class="row m-2">
                             <div class="col">Brand: </div>
-                            <div class="col"><input type="text" name="Brand" /></div>
+                            <div class="col"><input type="text" name="Brand" required /></div>
                         </div>
-                        <div class="row">
+                        <div class="row m-2">
                             <div class="col">Category: </div>
                             <div class="col">
                                 <select>
@@ -37,18 +37,18 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row m-2">
                             <div class="col">Price: </div>
-                            <div class="col"><input type="text" name="Price" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46" /></div>
+                            <div class="col"><input type="text" name="Price" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46" required /></div>
                         </div>
-                        <div class="row">
+                        <div class="row m-2">
                             <div class="col">Contents: </div>
-                            <div class="col"><input type="text" name="Contents" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" /></div>
+                            <div class="col"><input type="text" name="Contents" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" required /></div>
                         </div>
-                        <div class="row">
+                        <div class="row m-2">
                             <div class="col">Unit: </div>
                             <div class="col">
-                                <select name="Unit">
+                                <select name="Unit" required>
                                     <option value="" selected>...</option>
                                     @foreach (Unit unit in Enum.GetValues(typeof(Unit)))
                                     {

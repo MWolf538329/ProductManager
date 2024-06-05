@@ -6,63 +6,86 @@
     ViewData["title"] = "Product Modification Page";
 }
 
-<div class="text-center">
-    <h1>Product Modification</h1>
-    <form method="post">
-        <p>
-            <label>Name: </label>
-            <input type="text" name="Name" value="@Model.Name" />
-        </p>
-        <p>
-            <label>Brand: </label>
-            <input type="text" name="Brand" value="@Model.Brand" />
-        </p>
-        <p>
-            <label>Category: </label>
-            <select>
-                <option value="">...</option>
-                @if (ViewBag.Categories != null)
-                {
-                    foreach (string category in ViewBag.Categories)
-                    {
-                        if (category == Model.CategoryName)
-                        {
-                            <option value="@category" selected>@category</option>
-                        }
-                        else
-                        {
-                            <option value="@category">@category</option>
-                        }
-                    }
-                }
-            </select>
-        </p>
-        <p>
-            <label>Price: </label>
-            <input type="text" name="Price" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 190" value="@Model.Price" />
-        </p>
-        <p>
-            <label>Contents: </label>
-            <input type="text" name="Contents" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="@Model.Contents" />
-        </p>
-        <p>
-            <label>Unit: </label>
-            <select name="Unit">
-                @if(Model != null)
-                {
-                    foreach (Unit unit in Enum.GetValues(typeof(Unit)))
-                    {
-                        if (unit == Enum.Parse<Unit>(Model.Unit))
-                        {
-                            <option value="@unit" selected>@unit</option>
-                        }
-                        <option value="@unit">@unit</option>
-                    }
-                }
-            </select>
-        </p>
-        <p>
-            <input type="submit" name="Submit" value="Submit" />
-        </p>
-    </form>
+<div class="container text-center">
+    <div class="row align-items-start">
+        <div class="col"></div>
+
+        <div class="col text-center">
+            <h1>Product Modification</h1>
+
+            <form method="post">
+                <div class="row">
+                    <div class="col">
+                        <div class="row m-2">
+                            <input type="hidden" name="ID" value="@Model.Id" />
+                            <div class="col">Name: </div>
+                            <div class="col"><input type="text" name="Name" value="@Model.Name" /></div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col">Brand: </div>
+                            <div class="col"><input type="text" name="Brand" value="@Model.Brand" /></div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col">Category: </div>
+                            <div class="col">
+                                <select>
+                                    <option value="">...</option>
+                                    @if (ViewBag.Categories != null)
+                                    {
+                                        foreach (string category in ViewBag.Categories)
+                                        {
+                                            if (category == Model.CategoryName)
+                                            {
+                                                <option value="@category" selected>@category</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@category">@category</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col">Price: </div>
+                            <div class="col"><input type="text" name="Price" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 190" value="@Model.Price" /></div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col">Contents: </div>
+                            <div class="col"><input type="text" name="Contents" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="@Model.Contents" /></div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col">Unit: </div>
+                            <div class="col">
+                                <select name="Unit">
+                                    @if (Model != null)
+                                    {
+                                        foreach (Unit unit in Enum.GetValues(typeof(Unit)))
+                                        {
+                                            if (unit == Enum.Parse<Unit>(Model.Unit))
+                                            {
+                                                <option value="@unit" selected>@unit</option>
+                                            }
+                                            <option value="@unit">@unit</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row text-center">
+                    <div class="col"></div>
+                    <div class="col">
+                        <input type="submit" name="Submit" value="Submit" />
+                    </div>
+                    <div class="col"></div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col"></div>
+    </div>
 </div>

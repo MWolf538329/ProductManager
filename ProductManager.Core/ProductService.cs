@@ -38,6 +38,22 @@ namespace ProductManager.Core
             return _DAL.GetProduct(id);
         }
 
+        public string CreateProduct(string name, string brand, string category, decimal price, int contents, string unit)
+        {
+            return string.Empty;
+        }
+
+        public string UpdateProduct(int id, string name, string brand, string category, decimal price, int contents, string unit)
+        {
+            return string.Empty;
+        }
+
+        public string DeleteProduct(int id)
+        {
+            return string.Empty;
+        }
+
+
         public IEnumerable<Category> GetCategories()
         {
             List<Category> categories = new();
@@ -56,9 +72,6 @@ namespace ProductManager.Core
             return categories;
         }
 
-        public string UpdateProduct()
-        {
-            return string.Empty;
-        }
+        
     }
 }

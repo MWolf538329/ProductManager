@@ -97,7 +97,7 @@ namespace ProductManager.MVC.Controllers
                 && !InputEmpty(formFields["Contents"].ToString()) && !InputEmpty(formFields["Unit"].ToString()))
             {
                 succesMessage = _productService.CreateProduct(formFields["Name"].ToString(), formFields["Brand"].ToString(),
-                    formFields["Category"].ToString(), Convert.ToDecimal(formFields["Price"]), Convert.ToInt32(formFields["Contents"]), formFields["Unit"].ToString());
+                    formFields["CategoryName"].ToString(), Convert.ToDecimal(formFields["Price"]), Convert.ToInt32(formFields["Contents"]), formFields["Unit"].ToString());
             }
             else succesMessage = "Product input fields empty!";
 

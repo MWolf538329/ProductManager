@@ -6,7 +6,7 @@ namespace ProductManager.DAL
 {
     public class CategoryDAL : ICategoryDAL
     {
-        private string _conn;
+        private readonly string _conn;
         private SqlTransaction? _transaction;
 
         public CategoryDAL(string conn)
@@ -20,7 +20,7 @@ namespace ProductManager.DAL
 
             using (SqlConnection conn = new SqlConnection(_conn))
             {
-                SqlCommand cmd = new SqlCommand("SELECT Category.ID, Category.Name FROM Category", conn);
+                SqlCommand cmd = new SqlCommand("SELECT ID, Name FROM Category", conn);
 
                 conn.Open();
 
@@ -46,8 +46,8 @@ namespace ProductManager.DAL
 
             using (SqlConnection conn = new SqlConnection(_conn))
             {
-                SqlCommand cmd = new("SELECT Category.ID, Category.Name FROM Category WHERE Category.ID = @categoryID", conn);
-                cmd.Parameters.AddWithValue("@categoryID", id);
+                SqlCommand cmd = new("SELECT ID, Name FROM Category WHERE ID = @ID", conn);
+                cmd.Parameters.AddWithValue("@ID", id);
                 cmd.Connection = conn;
 
                 conn.Open();
@@ -74,8 +74,8 @@ namespace ProductManager.DAL
                 conn.Open();
                 _transaction = conn.BeginTransaction();
 
-                SqlCommand cmd = new SqlCommand("INSERT INTO Category (Name) VALUES (@categoryName)");
-                cmd.Parameters.AddWithValue("@categoryName", name);
+                SqlCommand cmd = new SqlCommand("INSERT INTO Category (Name) VALUES (@name)");
+                cmd.Parameters.AddWithValue("@name", name);
                 cmd.Connection = conn;
                 cmd.Transaction = _transaction;
 
@@ -86,18 +86,24 @@ namespace ProductManager.DAL
                     succesMessage = "Category succesfully created!";
                 }
                 catch (SqlException sqlEx)
-                { }
+                {
+                    // Number 2627 = Violation of UNIQUE KEY constraint - Duplicate Item
+                    if (sqlEx.Number == 2627) succesMessage = "Category could not be created because one with the same name already exists!";
+
+                    // Number 2628 = Data Exceeds Field Max Length
+                    else if (sqlEx.Number == 2628) succesMessage = "Category could not be created because the name is too long!";
+                    
+                    else
+                    {
+                        succesMessage = "Yet Unknown SQL Error!";
+                        throw new Exception(sqlEx.Message);
+                    }
+                }
                 catch (Exception ex)
                 {
                     _transaction.Rollback();
-
-                    // Duplicate Category
-                    if (ex.Message.Contains("Violation of UNIQUE KEY constraint 'Unique_Name'. Cannot insert duplicate key"))
-                        succesMessage = "Category could not be created because one with the same name already exists!";
-
-                    // Category Exceeds Max Length
-                    if (ex.Message.Contains("String or binary data would be truncated in table"))
-                        succesMessage = "Category could not be created because the name is too long!";
+                    succesMessage = "Unknown Error!";
+                    throw new Exception(ex.Message);
                 }
             }
 
@@ -113,9 +119,9 @@ namespace ProductManager.DAL
                 conn.Open();
                 _transaction = conn.BeginTransaction();
 
-                SqlCommand cmd = new SqlCommand("UPDATE Category SET Category.Name = @categoryName WHERE Category.ID = @categoryID");
-                cmd.Parameters.AddWithValue("@categoryName", name);
-                cmd.Parameters.AddWithValue("@categoryID", id);
+                SqlCommand cmd = new SqlCommand("UPDATE Category SET Name = @name WHERE ID = @ID");
+                cmd.Parameters.AddWithValue("@name", name);
+                cmd.Parameters.AddWithValue("@ID", id);
                 cmd.Connection = conn;
                 cmd.Transaction = _transaction;
 
@@ -125,17 +131,25 @@ namespace ProductManager.DAL
                     _transaction.Commit();
                     succesMessage = "Category succesfully updated!";
                 }
+                catch (SqlException sqlEx)
+                {
+                    // Number 2627 = Violation of UNIQUE KEY constraint - Duplicate Item
+                    if (sqlEx.Number == 2627) succesMessage = "Category could not be created because one with the same name already exists!";
+
+                    // Number 2628 = Data Exceeds Field Max Length
+                    else if (sqlEx.Number == 2628) succesMessage = "Category could not be created because the name is too long!";
+
+                    else
+                    {
+                        succesMessage = "Yet Unknown SQL Error!";
+                        throw new Exception(sqlEx.Message);
+                    }
+                }
                 catch (Exception ex)
                 {
                     _transaction.Rollback();
-
-                    // Duplicate Category
-                    if (ex.Message.Contains("Violation of UNIQUE KEY constraint 'Unique_Name'. Cannot insert duplicate key"))
-                        succesMessage = "Category could not be updated because one with the same name already exists!";
-
-                    // Category Exceeds Max Length
-                    if (ex.Message.Contains("String or binary data would be truncated in table"))
-                        succesMessage = "Category could not be updated because the name is too long!";
+                    succesMessage = "Unknown Error!";
+                    throw new Exception(ex.Message);
                 }
             }
                 
@@ -151,8 +165,8 @@ namespace ProductManager.DAL
                 conn.Open();
                 _transaction = conn.BeginTransaction();
 
-                SqlCommand cmd = new SqlCommand("DELETE FROM Category WHERE Category.ID = @categoryID");
-                cmd.Parameters.AddWithValue("@categoryID", id);
+                SqlCommand cmd = new SqlCommand("DELETE FROM Category WHERE ID = @ID");
+                cmd.Parameters.AddWithValue("@ID", id);
                 cmd.Connection = conn;
                 cmd.Transaction = _transaction;
 
@@ -162,13 +176,22 @@ namespace ProductManager.DAL
                     _transaction.Commit();
                     succesMessage = "Category succesfully deleted!";
                 }
+                catch (SqlException sqlEx)
+                {
+                    // Number 547 = The DELETE statement conflicted with the REFERENCE constraint
+                    if (sqlEx.Number == 547) succesMessage = "Category could not be deleted because it is linked to 1 or more products!";
+
+                    else
+                    {
+                        succesMessage = "Yet Unknown SQL Error!";
+                        throw new Exception(sqlEx.Message);
+                    }
+                }
                 catch (Exception ex)
                 {
                     _transaction.Rollback();
-
-                    // Category Linked To Product
-                    if (ex.Message.Contains("The DELETE statement conflicted with the REFERENCE constraint"))
-                        succesMessage = "Category could not be deleted because it is linked to 1 or more products!";
+                    succesMessage = "Unknown Error!";
+                    throw new Exception(ex.Message);
                 }
             }
                 

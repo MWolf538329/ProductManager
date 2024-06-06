@@ -2,13 +2,14 @@
 using ProductManager.Core;
 using ProductManager.Core.Interfaces;
 using ProductManager.Core.Models;
+using System.ComponentModel.Design;
 using System.Runtime.Serialization.Json;
 
 namespace ProductManager.DAL
 {
     public class ProductDAL : IProductDAL
     {
-        private string _conn;
+        private readonly string _conn;
         private SqlTransaction? _transaction;
 
         public ProductDAL(string conn)
@@ -93,11 +94,82 @@ namespace ProductManager.DAL
             return product;
         }
 
+        public string CreateProduct(string name, string brand, string categoryName, decimal price, int contents, string unit)
+        {
+            string succesMessage = string.Empty;
+
+            using (SqlConnection conn = new SqlConnection(_conn))
+            {
+                conn.Open();
+                _transaction = conn.BeginTransaction();
+
+                SqlCommand cmd = new SqlCommand("INSERT INTO Product (Name, Brand, Price, Contents, Unit, Category_ID) " +
+                    "VALUES (@name, @brand, @price, @contents, @unit, (SELECT ID FROM Category WHERE Name = @categoryName))");
+                cmd.Parameters.AddWithValue("@name", name);
+                cmd.Parameters.AddWithValue("@brand", brand);
+                cmd.Parameters.AddWithValue("@price", price);
+                cmd.Parameters.AddWithValue("@contents", contents);
+                cmd.Parameters.AddWithValue("@unit", unit);
+                cmd.Parameters.AddWithValue("@categoryName", categoryName);
+                cmd.Connection = conn;
+                cmd.Transaction = _transaction;
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    _transaction.Commit();
+                    succesMessage = "Product succesfully created!";
+                }
+                catch (SqlException sqlEx)
+                {
+                    // Number 2628 = Data Exceeds Field Max Length
+                    if (sqlEx.Number == 2628) succesMessage = "Product could not be created because the inserted data would exceed the max length!";
+
+                    else
+                    {
+                        succesMessage = "Yet Unknown SQL Error!";
+                        throw new Exception(sqlEx.Message);
+                    }
+
+                    _transaction.Rollback();
+                }
+                catch (Exception ex)
+                {
+                    _transaction.Rollback();
+                    succesMessage = "Unknown Error!";
+                    throw new Exception(ex.Message);
+                }
+            }
+
+            return succesMessage;
+        }
+
+        public string UpdateProduct(int id, string name, string brand, string categoryName, decimal price, int contents, string unit)
+        {
+            string succesMessage = string.Empty;
+
+            using (SqlConnection conn = new SqlConnection(_conn))
+            {
+                conn.Open();
+                _transaction = conn.BeginTransaction();
+
+                SqlCommand cmd = new SqlCommand("UPDATE Category SET Category.Name = @categoryName WHERE Category.ID = @categoryID");
+
+                SqlCommand cmd = new SqlCommand("UPDATE Product SET ");
+                cmd.Parameters.AddWithValue();
+                cmd.Connection = conn;
+                cmd.Transaction = _transaction;
+            }
+        }
+
+
         public List<Category> GetCategories()
         {
             CategoryDAL categoryDAL = new(_conn);
             return categoryDAL.GetCategories();
         }
+
+        
 
         //public List<Product> GetProducts(int skip, int take = 10)
         //{

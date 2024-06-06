@@ -38,9 +38,9 @@ namespace ProductManager.Core
             return _DAL.GetProduct(id);
         }
 
-        public string CreateProduct(string name, string brand, string category, decimal price, int contents, string unit)
+        public string CreateProduct(string name, string brand, string categoryName, decimal price, int contents, string unit)
         {
-            return string.Empty;
+            return _DAL.CreateProduct(name, brand, categoryName, price, contents, unit);
         }
 
         public string UpdateProduct(int id, string name, string brand, string category, decimal price, int contents, string unit)
@@ -71,7 +71,5 @@ namespace ProductManager.Core
 
             return categories;
         }
-
-        
     }
 }

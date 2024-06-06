@@ -154,9 +154,24 @@ namespace ProductManager.MVC.Controllers
                 && !InputEmpty(formFields["Contents"].ToString()) && !InputEmpty(formFields["Unit"].ToString()))
             {
                 succesMessage = _productService.UpdateProduct(Convert.ToInt32(formFields["ID"]), formFields["Name"].ToString(), formFields["Brand"].ToString(), 
-                    formFields["Category"].ToString(), Convert.ToDecimal(formFields["Price"]), Convert.ToInt32(formFields["Contents"]), formFields["Unit"].ToString());
+                    formFields["CategoryName"].ToString(), Convert.ToDecimal(formFields["Price"]), Convert.ToInt32(formFields["Contents"]), formFields["Unit"].ToString());
             }
             else succesMessage = "Product input fields empty!";
+
+            TempData["SuccesMessage"] = succesMessage;
+
+            return RedirectToAction("ProductOverview");
+        }
+
+        public IActionResult ProductDeletion(int id)
+        {
+            string succesMessage;
+
+            if (id != 0)
+            {
+                succesMessage = _productService.DeleteProduct(id);
+            }
+            else succesMessage = "Product can not be 0";
 
             TempData["SuccesMessage"] = succesMessage;
 

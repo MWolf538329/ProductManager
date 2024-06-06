@@ -45,12 +45,12 @@ namespace ProductManager.Core
 
         public string UpdateProduct(int id, string name, string brand, string category, decimal price, int contents, string unit)
         {
-            return string.Empty;
+            return _DAL.UpdateProduct(id, name, brand, category, price, contents, unit);
         }
 
         public string DeleteProduct(int id)
         {
-            return string.Empty;
+            return _DAL.DeleteProduct(id);
         }
 
 

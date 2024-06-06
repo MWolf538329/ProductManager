@@ -8,6 +8,7 @@ namespace ProductManager.Core.Interfaces
         Product GetProduct(int id);
         string CreateProduct(string name, string brand, string categoryName, decimal price, int contents, string unit);
         string UpdateProduct(int id, string name, string brand, string categoryName, decimal price, int contents, string unit);
+        string DeleteProduct(int id);
         List<Category> GetCategories();
     }
 }

@@ -1,8 +1,10 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.VisualBasic;
 using ProductManager.Core;
 using ProductManager.Core.Interfaces;
 using ProductManager.Core.Models;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Runtime.Serialization.Json;
 
 namespace ProductManager.DAL
@@ -153,15 +155,89 @@ namespace ProductManager.DAL
                 conn.Open();
                 _transaction = conn.BeginTransaction();
 
-                SqlCommand cmd = new SqlCommand("UPDATE Category SET Category.Name = @categoryName WHERE Category.ID = @categoryID");
-
-                SqlCommand cmd = new SqlCommand("UPDATE Product SET ");
-                cmd.Parameters.AddWithValue();
+                SqlCommand cmd = new SqlCommand("UPDATE Product SET Name = @name, Brand = @brand, Price = @price, Contents = @contents, Unit = @unit, " +
+                    "Category_ID = (SELECT ID FROM Category WHERE Name = @categoryName) WHERE ID = @ID");
+                cmd.Parameters.AddWithValue("@ID", id);
+                cmd.Parameters.AddWithValue("@name", name);
+                cmd.Parameters.AddWithValue("@brand", brand);
+                cmd.Parameters.AddWithValue("@price", price);
+                cmd.Parameters.AddWithValue("@contents", contents);
+                cmd.Parameters.AddWithValue("@unit", unit);
+                cmd.Parameters.AddWithValue("@categoryName", categoryName);
                 cmd.Connection = conn;
                 cmd.Transaction = _transaction;
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    _transaction.Commit();
+                    succesMessage = "Product succesfully updated!";
+                }
+                catch (SqlException sqlEx)
+                {
+                    // Number 2628 = Data Exceeds Field Max Length
+                    if (sqlEx.Number == 2628) succesMessage = "Product could not be updated because the inserted data would exceed the max length!";
+
+                    else
+                    {
+                        succesMessage = "Yet Unknown SQL Error!";
+                        throw new Exception(sqlEx.Message);
+                    }
+
+                    _transaction.Rollback();
+                }
+                catch (Exception ex)
+                {
+                    _transaction.Rollback();
+                    succesMessage = "Unknown Error!";
+                    throw new Exception(ex.Message);
+                }
             }
+
+            return succesMessage;
         }
 
+        public string DeleteProduct(int id)
+        {
+            string succesMessage = string.Empty;
+
+            using (SqlConnection conn = new SqlConnection(_conn))
+            {
+                conn.Open();
+                _transaction = conn.BeginTransaction();
+
+                SqlCommand cmd = new SqlCommand("DELETE FROM Product WHERE ID = @ID");
+                cmd.Parameters.AddWithValue("@ID", id);
+                cmd.Connection = conn;
+                cmd.Transaction = _transaction;
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    _transaction.Commit();
+                    succesMessage = "Product succesfully deleted!";
+                }
+                catch (SqlException sqlEx)
+                {
+                    // Number 547 = The DELETE statement conflicted with the REFERENCE constraint
+                    if (sqlEx.Number == 547) succesMessage = "Product could not be deleted because it is linked to 1 or more assortments!";
+
+                    else
+                    {
+                        succesMessage = "Yet Unknown SQL Error!";
+                        throw new Exception(sqlEx.Message);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _transaction.Rollback();
+                    succesMessage = "Unknown Error!";
+                    throw new Exception(ex.Message);
+                }
+            }
+
+            return succesMessage;
+        }
 
         public List<Category> GetCategories()
         {
@@ -170,6 +246,8 @@ namespace ProductManager.DAL
         }
 
         
+
+
 
         //public List<Product> GetProducts(int skip, int take = 10)
         //{

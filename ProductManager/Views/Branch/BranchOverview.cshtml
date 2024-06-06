@@ -1,23 +1,51 @@
-﻿@{
+﻿@model IEnumerable<ProductManager.MVC.Models.BranchViewModel>;
+
+@{
     ViewData["title"] = "Branch Overview Page";
 }
 
-<div id="ProductOverview">
-    <button>+</button>
-    <table id="ProductTable">
-        <tr>
-            <th><input placeholder="Name" /><button>&#8639;</button></th>
-            <th><input placeholder="Address" /><button>&#8643;</button></th>
-        </tr>
-        <tr>
-            <td>Plus</td>
-            <td>Kruidenlaan 159, 5803 BV Venray</td>
-        </tr>
-        <tr>
-            <td>Albert Heijn</td>
-            <td>Raadhuisstraat 100, 5801 MA Venray</td>
-        </tr>
+<div>
+    <h1 class="text-center">Branch Overview</h1>
+
+    @if (!string.IsNullOrEmpty(ViewBag.SuccesMessage))
+    {
+        if (ViewBag.SuccesMessage.Contains("succesfully"))
+        {
+            <div class="alert alert-success" role="alert">@ViewBag.SuccesMessage</div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">@ViewBag.SuccesMessage</div>
+        }
+    }
+
+    <a asp-area="" asp-controller="Branch" asp-action="BranchCreation">Create New Branch</a>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr class="table-primary">
+                <form method="get">
+                <th><input name="Name" placeholder="Name" /></th>
+                <th>Address</th>
+                <th>PostalCode</th>
+                <th><input name="City" placeholder="City" /></th>
+                </form>
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            @foreach (BranchViewModel branch in Model)
+            {
+                <tr>
+                    <td>@branch.Name</td>
+                    <td>@branch.Address</td>
+                    <td>@branch.PostalCode</td>
+                    <td>@branch.City</td>
+                    <td>@Html.ActionLink("Update", "BranchModification", new { id = branch.Id })</td>
+                    <td>@Html.ActionLink("Delete", "BranchDeletion", new { id = branch.Id })</td>
+                </tr>
+            }
+        </tbody>
     </table>
-    <button>&lt;</button>
-    <button>&gt;</button>
 </div>

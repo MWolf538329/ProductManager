@@ -4,24 +4,23 @@ using ProductManager.Core.Models;
 
 namespace ProductManager.DAL
 {
-    public class CategoryDAL : ICategoryDAL
+    public class BranchDAL : IBranchDAL
     {
         private readonly string _conn;
-        private SqlTransaction? _transaction;
+        private SqlTransaction _transaction;
 
-        public CategoryDAL(string conn)
+        public BranchDAL(string conn)
         {
             _conn = conn;
         }
 
-        public List<Category> GetCategories()
+        public List<Branch> GetBranches()
         {
-            List<Category> categories = new();
+            List<Branch> branches = new();
 
             using (SqlConnection conn = new SqlConnection(_conn))
             {
-                SqlCommand cmd = new SqlCommand("SELECT ID, Name FROM Category", conn);
-                cmd.Connection = conn;
+                SqlCommand cmd = new SqlCommand("SELECT ID, Name, Address, PostalCode, City FROM Branch", conn);
 
                 conn.Open();
 
@@ -29,26 +28,29 @@ namespace ProductManager.DAL
                 {
                     while (reader.Read())
                     {
-                        categories.Add(new Category()
+                        branches.Add(new Branch()
                         {
                             ID = Convert.ToInt32(reader["ID"]),
-                            Name = reader["Name"].ToString()!
+                            Name = reader["Name"].ToString()!,
+                            Address = reader["Address"].ToString()!,
+                            PostalCode = reader["PostalCode"].ToString()!,
+                            City = reader["City"].ToString()!
                         });
                     }
                 }
             }
 
-            return categories;
+            return branches;
         }
 
-        public Category GetCategory(int id)
+        public Branch GetBranch(int id)
         {
-            Category category = new();
+            Branch branch = new();
 
             using (SqlConnection conn = new SqlConnection(_conn))
             {
-                SqlCommand cmd = new("SELECT ID, Name FROM Category WHERE ID = @ID", conn);
-                cmd.Parameters.AddWithValue("@ID", id);
+                SqlCommand cmd = new SqlCommand("SELECT ID, Name, Address, PostalCode, City FROM Branch WHERE ID = @id", conn);
+                cmd.Parameters.AddWithValue("@id", id);
                 cmd.Connection = conn;
 
                 conn.Open();
@@ -57,16 +59,19 @@ namespace ProductManager.DAL
                 {
                     while (reader.Read())
                     {
-                        category.ID = Convert.ToInt32(reader["ID"]);
-                        category.Name = reader["Name"].ToString()!;
+                        branch.ID = Convert.ToInt32(reader["ID"]);
+                        branch.Name = reader["Name"].ToString()!;
+                        branch.Address = reader["Address"].ToString()!;
+                        branch.PostalCode = reader["PostalCode"].ToString()!;
+                        branch.City = reader["City"].ToString()!;
                     }
                 }
             }
 
-            return category;
-        }
+            return branch;
+        }        
 
-        public string CreateCategory(string name)
+        public string CreateBranch(string name, string address, string postalcode, string city)
         {
             string succesMessage = string.Empty;
 
@@ -75,8 +80,11 @@ namespace ProductManager.DAL
                 conn.Open();
                 _transaction = conn.BeginTransaction();
 
-                SqlCommand cmd = new SqlCommand("INSERT INTO Category (Name) VALUES (@name)");
+                SqlCommand cmd = new SqlCommand("INSERT INTO Branch (Name, Address, PostalCode, City) VALUES (@name, @address, @postalcode, @city)");
                 cmd.Parameters.AddWithValue("@name", name);
+                cmd.Parameters.AddWithValue("@address", address);
+                cmd.Parameters.AddWithValue("@postalcode", postalcode);
+                cmd.Parameters.AddWithValue("@city", city);
                 cmd.Connection = conn;
                 cmd.Transaction = _transaction;
 
@@ -84,16 +92,13 @@ namespace ProductManager.DAL
                 {
                     cmd.ExecuteNonQuery();
                     _transaction.Commit();
-                    succesMessage = "Category succesfully created!";
+                    succesMessage = "Branch succesfully created!";
                 }
                 catch (SqlException sqlEx)
                 {
-                    // Number 2627 = Violation of UNIQUE KEY constraint - Duplicate Item
-                    if (sqlEx.Number == 2627) succesMessage = "Category could not be created because one with the same name already exists!";
-
                     // Number 2628 = Data Exceeds Field Max Length
-                    else if (sqlEx.Number == 2628) succesMessage = "Category could not be created because the name is too long!";
-                    
+                    if (sqlEx.Number == 2628) succesMessage = "Branch could not be created because the inserted data would exceed the max length!";
+
                     else
                     {
                         succesMessage = "Yet Unknown SQL Error!";
@@ -111,7 +116,7 @@ namespace ProductManager.DAL
             return succesMessage;
         }
 
-        public string UpdateCategory(int id, string name)
+        public string UpdateBranch(int id, string name, string address, string postalcode, string city)
         {
             string succesMessage = string.Empty;
 
@@ -120,8 +125,11 @@ namespace ProductManager.DAL
                 conn.Open();
                 _transaction = conn.BeginTransaction();
 
-                SqlCommand cmd = new SqlCommand("UPDATE Category SET Name = @name WHERE ID = @ID");
+                SqlCommand cmd = new SqlCommand("UPDATE Branch SET Name = @name, Address = @address, PostalCode = @postalcode, City = @city WHERE ID = @ID");
                 cmd.Parameters.AddWithValue("@name", name);
+                cmd.Parameters.AddWithValue("@address", address);
+                cmd.Parameters.AddWithValue("@postalcode", postalcode);
+                cmd.Parameters.AddWithValue("@city", city);
                 cmd.Parameters.AddWithValue("@ID", id);
                 cmd.Connection = conn;
                 cmd.Transaction = _transaction;
@@ -130,15 +138,12 @@ namespace ProductManager.DAL
                 {
                     cmd.ExecuteNonQuery();
                     _transaction.Commit();
-                    succesMessage = "Category succesfully updated!";
+                    succesMessage = "Branch succesfully updated!";
                 }
                 catch (SqlException sqlEx)
                 {
-                    // Number 2627 = Violation of UNIQUE KEY constraint - Duplicate Item
-                    if (sqlEx.Number == 2627) succesMessage = "Category could not be created because one with the same name already exists!";
-
                     // Number 2628 = Data Exceeds Field Max Length
-                    else if (sqlEx.Number == 2628) succesMessage = "Category could not be created because the name is too long!";
+                    if (sqlEx.Number == 2628) succesMessage = "Branch could not be updated because the inserted data would exceed the max length!";
 
                     else
                     {
@@ -153,11 +158,11 @@ namespace ProductManager.DAL
                     throw new Exception(ex.Message);
                 }
             }
-                
+
             return succesMessage;
         }
 
-        public string DeleteCategory(int id)
+        public string DeleteBranch(int id)
         {
             string succesMessage = string.Empty;
 
@@ -166,7 +171,7 @@ namespace ProductManager.DAL
                 conn.Open();
                 _transaction = conn.BeginTransaction();
 
-                SqlCommand cmd = new SqlCommand("DELETE FROM Category WHERE ID = @ID");
+                SqlCommand cmd = new SqlCommand("DELETE FROM Branch WHERE ID = @ID");
                 cmd.Parameters.AddWithValue("@ID", id);
                 cmd.Connection = conn;
                 cmd.Transaction = _transaction;
@@ -175,12 +180,12 @@ namespace ProductManager.DAL
                 {
                     cmd.ExecuteNonQuery();
                     _transaction.Commit();
-                    succesMessage = "Category succesfully deleted!";
+                    succesMessage = "Branch succesfully deleted!";
                 }
                 catch (SqlException sqlEx)
                 {
                     // Number 547 = The DELETE statement conflicted with the REFERENCE constraint
-                    if (sqlEx.Number == 547) succesMessage = "Category could not be deleted because it is linked to 1 or more products!";
+                    if (sqlEx.Number == 547) succesMessage = "Branch could not be deleted because it is linked to an assortment";
 
                     else
                     {
@@ -195,7 +200,7 @@ namespace ProductManager.DAL
                     throw new Exception(ex.Message);
                 }
             }
-                
+
             return succesMessage;
         }
     }

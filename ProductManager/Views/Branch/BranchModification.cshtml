@@ -1,0 +1,51 @@
+﻿@using ProductManager.Core
+
+@model BranchViewModel
+
+@{
+    ViewData["title"] = "Branch Modification Page";
+}
+
+<div class="container text-center">
+    <div class="row align-items-start">
+        <div class="col"></div>
+
+        <div class="col text-center">
+            <h1>Branch Modification</h1>
+
+            <form method="post">
+                <div class="row">
+                    <div class="col">
+                        <div class="row m-2">
+                            <input type="hidden" name="ID" value="@Model.Id" />
+                            <div class="col">Name: </div>
+                            <div class="col"><input type="text" name="Name" value="@Model.Name" required /></div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col">Address: </div>
+                            <div class="col"><input type="text" name="Address" value="@Model.Address" required /></div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col">PostalCode: </div>
+                            <div class="col"><input type="text" name="PostalCode" value="@Model.PostalCode" required /></div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col">City: </div>
+                            <div class="col"><input type="text" name="City" value="@Model.City" required /></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row text-center">
+                    <div class="col"></div>
+                    <div class="col">
+                        <input type="submit" name="Submit" value="Submit" />
+                    </div>
+                    <div class="col"></div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col"></div>
+    </div>
+</div>

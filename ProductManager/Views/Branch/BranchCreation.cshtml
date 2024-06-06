@@ -1,0 +1,48 @@
+﻿@using ProductManager.Core
+
+@{
+    ViewData["title"] = "Branch Creation Page";
+}
+
+<div class="container text-center">
+    <div class="row align-items-start">
+        <div class="col"></div>
+
+        <div class="col text-center">
+            <h1>Branch Creation</h1>
+
+            <form method="post">
+                <div class="row">
+                    <div class="col">
+                        <div class="row m-2">
+                            <div class="col">Name: </div>
+                            <div class="col"><input type="text" name="Name" required /></div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col">Address: </div>
+                            <div class="col"><input type="text" name="Address" required /></div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col">PostalCode: </div>
+                            <div class="col"><input class="text-uppercase" type="text" name="PostalCode" placeholder="1234AB" maxlength="6" required /></div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col">City: </div>
+                            <div class="col"><input type="text" name="City" required /></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row text-center">
+                    <div class="col"></div>
+                    <div class="col">
+                        <input type="submit" name="Submit" value="Submit" />
+                    </div>
+                    <div class="col"></div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col"></div>
+    </div>
+</div>

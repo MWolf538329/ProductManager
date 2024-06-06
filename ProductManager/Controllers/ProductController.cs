@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using ProductManager.Core;
 using ProductManager.Core.Interfaces;
 using ProductManager.Core.Models;
@@ -93,8 +92,8 @@ namespace ProductManager.MVC.Controllers
         {
             string succesMessage;
 
-            if (!InputEmpty(formFields["Name"].ToString()) && !InputEmpty(formFields["Brand"].ToString()) && !InputEmpty(formFields["Price"].ToString())
-                && !InputEmpty(formFields["Contents"].ToString()) && !InputEmpty(formFields["Unit"].ToString()))
+            if (!string.IsNullOrEmpty(formFields["Name"].ToString()) && !string.IsNullOrEmpty(formFields["Brand"].ToString()) && !string.IsNullOrEmpty(formFields["Price"].ToString())
+                && !string.IsNullOrEmpty(formFields["Contents"].ToString()) && !string.IsNullOrEmpty(formFields["Unit"].ToString()))
             {
                 succesMessage = _productService.CreateProduct(formFields["Name"].ToString(), formFields["Brand"].ToString(),
                     formFields["CategoryName"].ToString(), Convert.ToDecimal(formFields["Price"]), Convert.ToInt32(formFields["Contents"]), formFields["Unit"].ToString());
@@ -108,12 +107,11 @@ namespace ProductManager.MVC.Controllers
 
         public IActionResult ProductModification(int id)
         {
-            Product product = new();
             ProductViewModel productViewModel = new();
 
             if (id != 0)
             {
-                product = _productService.GetProduct(id);
+                Product product = _productService.GetProduct(id);
 
                 if (product.ID != 0 && !string.IsNullOrEmpty(product.Name))
                 {
@@ -150,8 +148,8 @@ namespace ProductManager.MVC.Controllers
         {
             string succesMessage;
 
-            if (!InputEmpty(formFields["Name"].ToString()) && !InputEmpty(formFields["Brand"].ToString()) && !InputEmpty(formFields["Price"].ToString())
-                && !InputEmpty(formFields["Contents"].ToString()) && !InputEmpty(formFields["Unit"].ToString()))
+            if (!string.IsNullOrEmpty(formFields["Name"].ToString()) && !string.IsNullOrEmpty(formFields["Brand"].ToString()) && !string.IsNullOrEmpty(formFields["Price"].ToString())
+                && !string.IsNullOrEmpty(formFields["Contents"].ToString()) && !string.IsNullOrEmpty(formFields["Unit"].ToString()))
             {
                 succesMessage = _productService.UpdateProduct(Convert.ToInt32(formFields["ID"]), formFields["Name"].ToString(), formFields["Brand"].ToString(), 
                     formFields["CategoryName"].ToString(), Convert.ToDecimal(formFields["Price"]), Convert.ToInt32(formFields["Contents"]), formFields["Unit"].ToString());
@@ -176,11 +174,6 @@ namespace ProductManager.MVC.Controllers
             TempData["SuccesMessage"] = succesMessage;
 
             return RedirectToAction("ProductOverview");
-        }
-
-        private bool InputEmpty(string input)
-        {
-            return string.IsNullOrEmpty(input); 
         }
     }
 }

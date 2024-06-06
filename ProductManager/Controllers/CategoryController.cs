@@ -64,12 +64,11 @@ namespace ProductManager.MVC.Controllers
 
         public IActionResult CategoryModification(int id)
         {
-            Category category = new();
             CategoryViewModel categoryViewModel = new();
 
             if (id != 0)
             {
-                category = _categoryService.GetCategory(id);
+                Category category = _categoryService.GetCategory(id);
 
                 if (category.ID != 0 && !string.IsNullOrEmpty(category.Name))
                 {

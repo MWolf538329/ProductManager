@@ -1,11 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
-using Microsoft.VisualBasic;
 using ProductManager.Core;
 using ProductManager.Core.Interfaces;
 using ProductManager.Core.Models;
-using System.ComponentModel.Design;
-using System.Diagnostics;
-using System.Runtime.Serialization.Json;
 
 namespace ProductManager.DAL
 {

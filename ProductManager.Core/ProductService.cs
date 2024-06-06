@@ -1,10 +1,11 @@
 ﻿using ProductManager.Core.Interfaces;
 using ProductManager.Core.Models;
+
 namespace ProductManager.Core
 {
     public class ProductService
     {
-        IProductDAL _DAL;
+        readonly IProductDAL _DAL;
 
         public ProductService(IProductDAL dal)
         {

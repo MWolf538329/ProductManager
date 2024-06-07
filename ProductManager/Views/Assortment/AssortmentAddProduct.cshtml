@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<ProductManager.MVC.Models.ProductViewModel>;
 
 @{
-    ViewData["Title"] = "Product Overview Page";
+    ViewData["Title"] = "Assortment Add Product Page";
 }
 
 <div>
-    <h1 class="text-center">Product Overview</h1>
-
+    <h1 class="text-center">Assortment Add Product</h1>
+    <h3 class="text-center">@ViewBag.BranchName</h3>
     @if (!string.IsNullOrEmpty(ViewBag.SuccesMessage))
     {
         if (ViewBag.SuccesMessage.Contains("succesfully"))
@@ -19,8 +19,6 @@
         }
     }
 
-    <a asp-area="" asp-controller="Product" asp-action="ProductCreation">Create New Product</a>
-
     <table class="table table-bordered">
         <thead>
             <tr class="table-primary">
@@ -32,8 +30,7 @@
                 <th>Price</th>
                 <th>Contents</th>
                 <th>Unit</th>
-                <th>Update</th>
-                <th>Delete</th>
+                <th>Add</th>
             </tr>
         </thead>
         <tbody class="table-group-divider">
@@ -46,8 +43,7 @@
                     <td>@product.Price.ToString().Replace(",", ".")</td>
                     <td>@product.Contents</td>
                     <td>@product.Unit</td>
-                    <td>@Html.ActionLink("Update", "ProductModification", new { id = product.Id })</td>
-                    <td>@Html.ActionLink("Delete", "ProductDeletion", new { id = product.Id })</td>
+                    <td>@Html.ActionLink("Add", "AddProductToAssortment", new { id = product.Id })</td>
                 </tr>
             }
         </tbody>

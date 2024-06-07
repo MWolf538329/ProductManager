@@ -18,6 +18,7 @@ namespace ProductManager.MVC.Controllers
         {
             _configuration = configuration;
             _connectionString = _configuration.GetConnectionString("ProductManagerTest")!;
+            //_connectionString = _configuration.GetConnectionString("ProductManagerTestLOCAL")!;
             _branchDAL = new BranchDAL(_connectionString);
             _branchService = new(_branchDAL);
         }

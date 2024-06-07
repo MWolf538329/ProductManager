@@ -1,0 +1,63 @@
+﻿@using ProductManager.Core
+
+@model AssortmentProductViewModel
+
+@{
+    ViewData["title"] = "Assortment Product Modification Page";
+}
+
+<div class="container text-center">
+    <div class="row align-items-start">
+        <div class="col"></div>
+
+        <div class="col text-center">
+            <h1>Assortment Product Modification</h1>
+
+            <form method="post">
+                <div class="row">
+                    <div class="col">
+                        <div class="row m-2">
+                            <input type="hidden" name="ID" value="@Model.Id" />
+                            <div class="col">Name: </div>
+                            <div class="col">@Model.Name</div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col">Brand: </div>
+                            <div class="col">@Model.Brand</div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col">Category: </div>
+                            <div class="col">@Model.Category</div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col">Price: </div>
+                            <div class="col">@Model.Price</div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col">Contents: </div>
+                            <div class="col">@Model.Contents"</div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col">Unit: </div>
+                            <div class="col">@Model.Unit</div>
+                        </div>
+                        <div class="row m-2">
+                            <div class="col">Stock: </div>
+                            <div class="col"><input type="text" name="Stock" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="@Model.Stock" required /></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row text-center">
+                    <div class="col"></div>
+                    <div class="col">
+                        <input type="submit" name="Submit" value="Submit" />
+                    </div>
+                    <div class="col"></div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col"></div>
+    </div>
+</div>

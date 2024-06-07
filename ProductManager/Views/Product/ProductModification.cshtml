@@ -49,7 +49,7 @@
                         </div>
                         <div class="row m-2">
                             <div class="col">Price: </div>
-                            <div class="col"><input type="text" name="Price" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 190" value="@Model.Price" /></div>
+                            <div class="col"><input type="text" name="Price" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 190" value="@Model.Price.ToString().Replace(",", ".")" /></div>
                         </div>
                         <div class="row m-2">
                             <div class="col">Contents: </div>

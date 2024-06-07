@@ -4,6 +4,7 @@ using ProductManager.Core.Interfaces;
 using ProductManager.Core.Models;
 using ProductManager.DAL;
 using ProductManager.MVC.Models;
+using System.Globalization;
 
 namespace ProductManager.MVC.Controllers
 {
@@ -18,6 +19,7 @@ namespace ProductManager.MVC.Controllers
         {
             _configuration = configuration;
             _connectionString = _configuration.GetConnectionString("ProductManagerTest")!;
+            //_connectionString = _configuration.GetConnectionString("ProductManagerTestLOCAL")!;
             _productDAL = new ProductDAL(_connectionString);
             _productService = new(_productDAL);
         }
@@ -46,33 +48,6 @@ namespace ProductManager.MVC.Controllers
             return View(productViewModels);
         }
 
-        //[HttpGet]
-        //public IActionResult ProductOverview(IFormCollection formFields)
-        //{
-        //    IProductDAL productDAL = new ProductDAL(_configuration.GetConnectionString("ProductManagerTest")!);
-
-        //    ProductService productService = new(productDAL);
-
-        //    List<ProductViewModel> productViewModels = new();
-
-        //    foreach (Product product in productService.GetProducts())
-        //    {
-        //        ProductViewModel productViewModel = new ProductViewModel()
-        //        {
-        //            Name = product.Name,
-        //            Brand = product.Brand,
-        //            Category = product.Category.ToString()!,
-        //            Price = product.Price,
-        //            Contents = product.Contents,
-        //            Unit = product.Unit.ToString()!
-        //        };
-
-        //        productViewModels.Add(productViewModel);
-        //    }
-
-        //    return View(productViewModels);
-        //}
-
         public IActionResult ProductCreation()
         {
             List<string> categories = new List<string>();
@@ -96,7 +71,8 @@ namespace ProductManager.MVC.Controllers
                 && !string.IsNullOrEmpty(formFields["Contents"].ToString()) && !string.IsNullOrEmpty(formFields["Unit"].ToString()))
             {
                 succesMessage = _productService.CreateProduct(formFields["Name"].ToString(), formFields["Brand"].ToString(),
-                    formFields["CategoryName"].ToString(), Convert.ToDecimal(formFields["Price"]), Convert.ToInt32(formFields["Contents"]), formFields["Unit"].ToString());
+                    formFields["CategoryName"].ToString(), Convert.ToDecimal(formFields["Price"], CultureInfo.CreateSpecificCulture("en-US")),
+                    Convert.ToInt32(formFields["Contents"]), formFields["Unit"].ToString());
             }
             else succesMessage = "Product input fields empty!";
 
@@ -152,7 +128,8 @@ namespace ProductManager.MVC.Controllers
                 && !string.IsNullOrEmpty(formFields["Contents"].ToString()) && !string.IsNullOrEmpty(formFields["Unit"].ToString()))
             {
                 succesMessage = _productService.UpdateProduct(Convert.ToInt32(formFields["ID"]), formFields["Name"].ToString(), formFields["Brand"].ToString(), 
-                    formFields["CategoryName"].ToString(), Convert.ToDecimal(formFields["Price"]), Convert.ToInt32(formFields["Contents"]), formFields["Unit"].ToString());
+                    formFields["CategoryName"].ToString(), Convert.ToDecimal(formFields["Price"], CultureInfo.CreateSpecificCulture("en-US")),
+                    Convert.ToInt32(formFields["Contents"]), formFields["Unit"].ToString());
             }
             else succesMessage = "Product input fields empty!";
 

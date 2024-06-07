@@ -1,0 +1,56 @@
+﻿@model ProductManager.MVC.Models.AssortmentViewModel;
+
+@{
+    ViewData["Title"] = "Assortment Overview Page";
+}
+
+<div>
+    <h1 class="text-center">Assortment Overview</h1>
+    <h3 class="text-center">@ViewBag.BranchName</h3>
+    @if (!string.IsNullOrEmpty(ViewBag.SuccesMessage))
+    {
+        if (ViewBag.SuccesMessage.Contains("succesfully"))
+        {
+            <div class="alert alert-success" role="alert">@ViewBag.SuccesMessage</div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">@ViewBag.SuccesMessage</div>
+        }
+    }
+
+    @Html.ActionLink("Add Product To Assortment", "AssortmentAddProduct", new { id = ViewBag.BranchID })
+    @* <a asp-area="" asp-controller="Assortment" asp-action="AssortmentAddProduct">Add Product To Assortment</a> *@
+
+    <table class="table table-bordered">
+        <thead>
+            <tr class="table-primary">
+                <th>Name</th>
+                <th>Brand</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Contents</th>
+                <th>Unit</th>
+                <th>Stock</th>
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            @foreach (AssortmentProductViewModel assortmentProduct in Model.AssortmentProducts)
+            {
+                <tr>
+                    <td>@assortmentProduct.Name</td>
+                    <td>@assortmentProduct.Brand</td>
+                    <td>@assortmentProduct.Category</td>
+                    <td>@assortmentProduct.Price</td>
+                    <td>@assortmentProduct.Contents</td>
+                    <td>@assortmentProduct.Unit</td>
+                    <td>@assortmentProduct.Stock</td>
+                    <td>@Html.ActionLink("Update Stock", "AssortmentProductModification", new { id = assortmentProduct.Id })</td>
+                    <td>@Html.ActionLink("Delete", "AssortmentProductDeletion", new { id = assortmentProduct.Id })</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

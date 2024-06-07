@@ -203,5 +203,29 @@ namespace ProductManager.DAL
 
             return succesMessage;
         }
+
+        public string GetBranchName(int id)
+        {
+            string name = string.Empty;
+
+            using (SqlConnection conn = new(_conn))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT Name FROM Branch WHERE ID = @id", conn);
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.Connection = conn;
+
+                conn.Open();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        name = reader["Name"].ToString()!;
+                    }
+                }
+            }
+
+            return name;
+        }
     }
 }

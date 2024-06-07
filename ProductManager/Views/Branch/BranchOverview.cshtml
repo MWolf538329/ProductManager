@@ -31,7 +31,7 @@
                 <th><input name="City" placeholder="City" /></th>
                 </form>
                 <th>Update</th>
-                <th>Delete</th>
+                <th>Assortment</th>
             </tr>
         </thead>
         <tbody class="table-group-divider">
@@ -43,7 +43,7 @@
                     <td>@branch.PostalCode</td>
                     <td>@branch.City</td>
                     <td>@Html.ActionLink("Update", "BranchModification", new { id = branch.Id })</td>
-                    <td>@Html.ActionLink("Delete", "BranchDeletion", new { id = branch.Id })</td>
+                    <td>@Html.ActionLink("Assortment", "AssortmentOverview", "Assortment", new { id = branch.Id })</td>
                 </tr>
             }
         </tbody>

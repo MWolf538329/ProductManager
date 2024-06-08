@@ -17,6 +17,7 @@
                 <div class="row">
                     <div class="col">
                         <div class="row m-2">
+                            <input type="hidden" name="BranchID" value="@Model.BranchId" />
                             <input type="hidden" name="ID" value="@Model.Id" />
                             <div class="col">Name: </div>
                             <div class="col">@Model.Name</div>
@@ -35,7 +36,7 @@
                         </div>
                         <div class="row m-2">
                             <div class="col">Contents: </div>
-                            <div class="col">@Model.Contents"</div>
+                            <div class="col">@Model.Contents</div>
                         </div>
                         <div class="row m-2">
                             <div class="col">Unit: </div>

@@ -104,6 +104,8 @@ namespace ProductManager.DAL
                         succesMessage = "Yet Unknown SQL Error!";
                         throw new Exception(sqlEx.Message);
                     }
+
+                    _transaction.Rollback();
                 }
                 catch (Exception ex)
                 {

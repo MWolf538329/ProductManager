@@ -20,7 +20,6 @@
     }
 
     @Html.ActionLink("Add Product To Assortment", "AssortmentAddProduct", new { id = ViewBag.BranchID })
-    @* <a asp-area="" asp-controller="Assortment" asp-action="AssortmentAddProduct">Add Product To Assortment</a> *@
 
     <table class="table table-bordered">
         <thead>
@@ -48,7 +47,7 @@
                     <td>@assortmentProduct.Unit</td>
                     <td>@assortmentProduct.Stock</td>
                     <td>@Html.ActionLink("Update Stock", "AssortmentProductModification", new { id = assortmentProduct.Id })</td>
-                    <td>@Html.ActionLink("Delete", "AssortmentProductDeletion", new { id = assortmentProduct.Id })</td>
+                    <td>@Html.ActionLink("Delete", "AssortmentProductDeletion", new { branchId = assortmentProduct.BranchId, id = assortmentProduct.Id })</td>
                 </tr>
             }
         </tbody>

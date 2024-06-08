@@ -43,7 +43,7 @@
                     <td>@product.Price.ToString().Replace(",", ".")</td>
                     <td>@product.Contents</td>
                     <td>@product.Unit</td>
-                    <td>@Html.ActionLink("Add", "AddProductToAssortment", new { id = product.Id })</td>
+                    <td>@Html.ActionLink("Add", "AddProductToAssortment", new { branchId = ViewBag.BranchID, productId = product.Id })</td>
                 </tr>
             }
         </tbody>

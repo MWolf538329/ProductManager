@@ -1,1 +1,43 @@
-﻿
+﻿@model IEnumerable<ProductManager.MVC.Models.OrderViewModel>;
+
+@{
+    ViewData["Title"] = "Order Overview Page";
+}
+
+<div>
+    <h1 class="text-center">Order Overview</h1>
+
+    @if (!string.IsNullOrEmpty(ViewBag.SuccesMessage))
+    {
+        if (ViewBag.SuccesMessage.Contains("succesfully"))
+        {
+            <div class="alert alert-success" role="alert">@ViewBag.SuccesMessage</div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">@ViewBag.SuccesMessage</div>
+        }
+    }
+
+    <a asp-area="" asp-controller="Order" asp-action="OrderSelection">Create New Order</a>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr class="table-primary">
+                <th>Customer</th>
+                <th>Branch</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            @foreach (OrderViewModel order in Model)
+            {
+                <tr>
+                    <td>@order.CustomerName</td>
+                    <td>@order.BranchName</td>
+                    <td>@Html.ActionLink("Details", "OrderDetails", new { id = order.Id })</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

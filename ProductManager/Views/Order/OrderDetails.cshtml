@@ -1,0 +1,37 @@
+﻿@model ProductManager.MVC.Models.OrderViewModel;
+
+@{
+    ViewData["Title"] = "Order Details Page";
+}
+
+<div>
+    <h1 class="text-center">Order Details</h1>
+    <h3 class="text-center">@Model.CustomerName - @Model.BranchName</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr class="table-primary">
+                <th>Name</th>
+                <th>Brand</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Contents</th>
+                <th>Unit</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            @foreach (OrderLineViewModel orderLine in Model.OrderLines)
+            {
+                <tr>
+                    <td>@orderLine.Product.Name</td>
+                    <td>@orderLine.Product.Brand</td>
+                    <td>@orderLine.Product.CategoryName</td>
+                    <td>@orderLine.Product.Price</td>
+                    <td>@orderLine.Product.Contents</td>
+                    <td>@orderLine.Product.Unit</td>
+                    <td>@orderLine.Amount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

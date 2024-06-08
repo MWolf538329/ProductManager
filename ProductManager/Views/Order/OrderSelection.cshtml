@@ -1,0 +1,61 @@
+﻿@using ProductManager.Core
+
+@{
+    ViewData["title"] = "Order Selection Page";
+}
+
+<div class="container text-center">
+    <div class="row align-items-start">
+        <div class="col"></div>
+
+        <div class="col text-center">
+            <h1>Order Selection</h1>
+
+            <form method="post">
+                <div class="row">
+                    <div class="col">
+                        <div class="row m-2">
+                            <div class="col">Customer: </div>
+                            <div class="col">
+                                <select name="Customer">
+                                    <option value="" selected>...</option>
+                                    @if (ViewBag.Customers != null)
+                                    {
+                                        foreach (Dictionary<int, string> customer in ViewBag.Customers)
+                                        {
+                                            <option value="@customer.Keys">@customer.Values</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="col">Branch: </div>
+                            <div class="col">
+                                <select name="Branch">
+                                    <option value="" selected>...</option>
+                                    @if (ViewBag.Branches != null)
+                                    {
+                                        foreach (Dictionary<int, string> branch in ViewBag.Branches)
+                                        {
+                                            <option value="@branch.Keys">@branch.Values</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row text-center">
+                    <div class="col"></div>
+                    <div class="col">
+                        <input type="submit" name="Submit" value="Submit" />
+                    </div>
+                    <div class="col"></div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col"></div>
+    </div>
+</div>

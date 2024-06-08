@@ -1,1 +1,47 @@
-﻿
+﻿@model IEnumerable<ProductManager.MVC.Models.CustomerViewModel>;
+
+@{
+    ViewData["Title"] = "Customer Overview Page";
+}
+
+<div>
+    <h1 class="text-center">Customer Overview</h1>
+
+    @if (!string.IsNullOrEmpty(ViewBag.SuccesMessage))
+    {
+        if (ViewBag.SuccesMessage.Contains("succesfully"))
+        {
+            <div class="alert alert-success" role="alert">@ViewBag.SuccesMessage</div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">@ViewBag.SuccesMessage</div>
+        }
+    }
+
+    <a asp-area="" asp-controller="Customer" asp-action="CustomerCreation">Create New Customer</a>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr class="table-primary">
+                <th>Name</th>
+                <th>Address</th>
+                <th>PostalCode</th>
+                <th>City</th>
+                <th>Update</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            @foreach (CustomerViewModel customer in Model)
+            {
+                <tr>
+                    <td>@customer.Name</td>
+                    <td>@customer.Address</td>
+                    <td>@customer.PostalCode</td>
+                    <td>@customer.City</td>
+                    <td>@Html.ActionLink("Update", "CustomerModification", new { id = customer.ID })</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -129,9 +129,66 @@ namespace ProductManager.DAL
             return order;
         }
 
+        public List<Product> GetProductsFromAssortmentOfBranch(int branchId)
+        {
+            List<Product> products = new();
+
+            using (SqlConnection conn = new(_conn))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT P.ID AS 'P.ID', P.Name AS 'P.Name', P.Brand AS 'P.Brand', C.ID AS 'C.ID', C.Name AS 'C.Name', " +
+                    "P.Price AS 'P.Price', P.Contents AS 'P.Contents', P.Unit AS 'P.Unit' " +
+                    "FROM Assortment AS A " +
+                    "LEFT JOIN Product AS P ON A.Product_ID = P.ID " +
+                    "LEFT JOIN Category AS C ON P.Category_ID = C.ID " +
+                    "WHERE A.Branch_ID = @branchID", conn);
+                cmd.Parameters.AddWithValue("@branchID", branchId);
+                cmd.Connection = conn;
+
+                conn.Open();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Product product = new();
+
+                        product.ID = Convert.ToInt32(reader["P.ID"]);
+                        product.Name = reader["P.Name"].ToString()!;
+                        product.Brand = reader["P.Brand"].ToString()!;
+
+                        if (!string.IsNullOrEmpty(reader["C.ID"].ToString()) && !string.IsNullOrEmpty(reader["C.Name"].ToString()))
+                        {
+                            product.Category.ID = Convert.ToInt32(reader["C.ID"]);
+                            product.Category.Name = reader["C.Name"].ToString()!;
+                        }
+
+                        product.Price = Convert.ToDecimal(reader["P.Price"]);
+                        product.Contents = Convert.ToInt32(reader["P.Contents"]);
+                        product.Unit = Enum.Parse<Unit>(reader["P.Unit"].ToString()!);
+
+                        products.Add(product);
+                    }
+                }
+            }
+
+            return products;
+        }
+
         public string CreateOrder(Order order, List<OrderLine> orderLines)
         {
             throw new NotImplementedException();
+        }
+
+        public List<Customer> GetCustomers()
+        {
+            CustomerDAL customerDAL = new(_conn);
+            return customerDAL.GetCustomers();
+        }
+
+        public List<Branch> GetBranches()
+        {
+            BranchDAL branchDAL = new(_conn);
+            return branchDAL.GetBranches();
         }
     }
 }

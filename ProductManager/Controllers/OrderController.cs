@@ -83,13 +83,40 @@ namespace ProductManager.MVC.Controllers
 
         public IActionResult OrderSelection()
         {
-            return View();
-        }
+            OrderSelectionViewModel orderSelectionViewModel = new();
+            List<CustomerViewModel> customerViewModels = new();
+            List<BranchViewModel> branchViewModels = new();
 
-        [HttpPost]
-        public IActionResult OrderSelection(IFormCollection formFields)
-        {
-            return View();
+            foreach (Customer customer in _orderService.GetCustomers())
+            {
+                CustomerViewModel customerViewModel = new();
+
+                customerViewModel.ID = customer.ID;
+                customerViewModel.Name = customer.Name;
+                customerViewModel.Address = customer.Address;
+                customerViewModel.PostalCode = customer.PostalCode;
+                customerViewModel.City = customer.City;
+
+                customerViewModels.Add(customerViewModel);
+            }
+
+            foreach (Branch branch in _orderService.GetBranches())
+            {
+                BranchViewModel branchViewModel = new();
+
+                branchViewModel.Id = branch.ID;
+                branchViewModel.Name = branch.Name;
+                branchViewModel.Address = branch.Address;
+                branchViewModel.PostalCode = branch.PostalCode;
+                branchViewModel.City = branch.City;
+
+                branchViewModels.Add(branchViewModel);
+            }
+
+            orderSelectionViewModel.customers = customerViewModels;
+            orderSelectionViewModel.branches = branchViewModels;
+
+            return View(orderSelectionViewModel);
         }
 
         public IActionResult OrderCreation()

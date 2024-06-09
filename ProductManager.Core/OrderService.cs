@@ -28,5 +28,15 @@ namespace ProductManager.Core
         {
             return _DAL.GetOrder(id);
         }
+
+        public List<Customer> GetCustomers()
+        {
+            return _DAL.GetCustomers();
+        }
+
+        public List<Branch> GetBranches()
+        {
+            return _DAL.GetBranches();
+        }
     }
 }

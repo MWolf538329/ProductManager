@@ -1,4 +1,4 @@
-﻿@using ProductManager.Core
+﻿@model OrderSelectionViewModel;
 
 @{
     ViewData["title"] = "Order Selection Page";
@@ -19,25 +19,27 @@
                             <div class="col">
                                 <select name="Customer">
                                     <option value="" selected>...</option>
-                                    @if (ViewBag.Customers != null)
+                                    @if (Model.customers != null)
                                     {
-                                        foreach (Dictionary<int, string> customer in ViewBag.Customers)
+                                        foreach (CustomerViewModel customer in Model.customers)
                                         {
-                                            <option value="@customer.Keys">@customer.Values</option>
+                                            <option value="@customer.ID">@customer.Name</option>
                                         }
                                     }
                                 </select>
                             </div>
+                        </div>
 
+                        <div class="row m-2">
                             <div class="col">Branch: </div>
                             <div class="col">
                                 <select name="Branch">
                                     <option value="" selected>...</option>
-                                    @if (ViewBag.Branches != null)
+                                    @if (Model.branches != null)
                                     {
-                                        foreach (Dictionary<int, string> branch in ViewBag.Branches)
+                                        foreach (BranchViewModel branch in Model.branches)
                                         {
-                                            <option value="@branch.Keys">@branch.Values</option>
+                                            <option value="@branch.Id">@branch.Name</option>
                                         }
                                     }
                                 </select>

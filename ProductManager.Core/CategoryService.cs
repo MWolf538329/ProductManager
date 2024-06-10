@@ -1,6 +1,6 @@
 ﻿using ProductManager.Core.Interfaces;
 using ProductManager.Core.Models;
-using System.Reflection.Metadata.Ecma335;
+
 namespace ProductManager.Core
 {
     public class CategoryService
@@ -14,7 +14,14 @@ namespace ProductManager.Core
 
         public Category GetCategory(int id)
         {
-            return _DAL.GetCategory(id);
+            Category category = new();
+
+            category = _DAL.GetCategory(id);
+
+            if (category.ID == 0) throw new Exception("Category ID can not be 0!");
+            if (string.IsNullOrEmpty(category.Name)) throw new Exception("Category Name can not be empty!");
+
+            return category;
         }
 
         public IEnumerable<Category> GetCategories()

@@ -7,7 +7,7 @@ namespace ProductManager.DAL
     public class CustomerDAL : ICustomerDAL
     {
         private readonly string _conn;
-        private SqlTransaction _transaction;
+        private SqlTransaction? _transaction;
 
         public CustomerDAL(string conn)
         {

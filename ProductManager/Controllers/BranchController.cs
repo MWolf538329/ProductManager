@@ -109,20 +109,5 @@ namespace ProductManager.MVC.Controllers
 
             return RedirectToAction("BranchOverview");
         }
-
-        public IActionResult BranchDeletion(int id)
-        {
-            string succesMessage;
-
-            if (id != 0)
-            {
-                succesMessage = _branchService.DeleteBranch(id);
-            }
-            else succesMessage = "Branch can not be 0";
-
-            TempData["SuccesMessage"] = succesMessage;
-
-            return RedirectToAction("BranchOverview");
-        }
     }
 }

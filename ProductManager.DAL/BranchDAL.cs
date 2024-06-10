@@ -7,7 +7,7 @@ namespace ProductManager.DAL
     public class BranchDAL : IBranchDAL
     {
         private readonly string _conn;
-        private SqlTransaction _transaction;
+        private SqlTransaction? _transaction;
 
         public BranchDAL(string conn)
         {
@@ -146,48 +146,6 @@ namespace ProductManager.DAL
                 {
                     // Number 2628 = Data Exceeds Field Max Length
                     if (sqlEx.Number == 2628) succesMessage = "Branch could not be updated because the inserted data would exceed the max length!";
-
-                    else
-                    {
-                        succesMessage = "Yet Unknown SQL Error!";
-                        throw new Exception(sqlEx.Message);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _transaction.Rollback();
-                    succesMessage = "Unknown Error!";
-                    throw new Exception(ex.Message);
-                }
-            }
-
-            return succesMessage;
-        }
-
-        public string DeleteBranch(int id)
-        {
-            string succesMessage = string.Empty;
-
-            using (SqlConnection conn = new SqlConnection(_conn))
-            {
-                conn.Open();
-                _transaction = conn.BeginTransaction();
-
-                SqlCommand cmd = new SqlCommand("DELETE FROM Branch WHERE ID = @ID");
-                cmd.Parameters.AddWithValue("@ID", id);
-                cmd.Connection = conn;
-                cmd.Transaction = _transaction;
-
-                try
-                {
-                    cmd.ExecuteNonQuery();
-                    _transaction.Commit();
-                    succesMessage = "Branch succesfully deleted!";
-                }
-                catch (SqlException sqlEx)
-                {
-                    // Number 547 = The DELETE statement conflicted with the REFERENCE constraint
-                    if (sqlEx.Number == 547) succesMessage = "Branch could not be deleted because it is linked to an assortment";
 
                     else
                     {

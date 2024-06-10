@@ -1,16 +1,14 @@
 ﻿using Microsoft.Data.SqlClient;
-using Microsoft.VisualBasic;
 using ProductManager.Core;
 using ProductManager.Core.Interfaces;
 using ProductManager.Core.Models;
-using System.Diagnostics;
 
 namespace ProductManager.DAL
 {
     public class AssortmentDAL : IAssortmentDAL
     {
         private readonly string _conn;
-        private SqlTransaction _transaction;
+        private SqlTransaction? _transaction;
 
         public AssortmentDAL(string conn)
         {

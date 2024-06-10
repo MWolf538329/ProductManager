@@ -8,6 +8,5 @@ namespace ProductManager.Core.Interfaces
         Branch GetBranch(int id);
         string CreateBranch(string name, string address, string postalcode, string city);
         string UpdateBranch(int id, string name, string address, string postalcode, string city);
-        string DeleteBranch(int id);
     }
 }
